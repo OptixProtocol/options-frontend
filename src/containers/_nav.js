@@ -28,7 +28,7 @@ export default [
         _name: 'CSidebarNavItem',
         name: 'Twitter',
         target: '_blank',
-        href: 'https://twitter.com/AlfabetCrypto'
+        href: 'https://twitter.com/CryptoOptyn'
       }     
     ]
   }
