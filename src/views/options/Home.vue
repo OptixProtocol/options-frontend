@@ -29,7 +29,7 @@
       <li><a href="https://discord.gg/8ycMuYt7PS">Discord</a></li>
       <li><a href="https://twitter.com/AlfabetCrypto">Twitter</a></li>
       <!-- <li>Read the docs</li>
-      <li>FAQ</li> -->
+      <li>FAQ</li>  -->
     </ul>
   </div>
 </template>
