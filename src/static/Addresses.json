@@ -1,0 +1,27 @@
+{
+  "development": {
+    "ERC20LiquidityPool": "0x3da00BeEa254310bc6045E638b77F0945efE9f30",
+    "ERC20Options": "0x19973Fb19603b3e3a8D36DD5F83300Ba5e49a260",
+    "WriterPool": "0xa0440A78556e63C2647e28eA95c08f77BCafA608"
+  },
+  "rinkeby": {
+    "ERC20LiquidityPool": "0x3DD15c7B4Be4e0Ee361B3456280100336D8Be3D0",
+    "ERC20Options": "0x154ec73558C550D2Cd792E2177b44526b341cF0E",
+    "WriterPool": "0xb50d1CfF7C80CBCD5A036D9d40Bc73cc9026510F"
+  },
+  "mainnet": {
+    "ERC20LiquidityPool": "0xfA75019671973f765048129EB8059AC82D2CA3f0",
+    "ERC20Options": "0x2a8fd99c19271f4f04b1b7b9c4f7cf264b626edb",
+    "WriterPool": "0xC4478743CA22803407B151893c05a921921AAc23"
+  },
+  "binanceTestnet": {
+    "ERC20LiquidityPool": "0xfA75019671973f765048129EB8059AC82D2CA3f0",
+    "ERC20Options": "0x2a8fd99c19271f4f04b1b7b9c4f7cf264b626edb",
+    "WriterPool": "0xC4478743CA22803407B151893c05a921921AAc23"
+  },
+  "binanceMainnet": {
+    "ERC20LiquidityPool": "0xfA75019671973f765048129EB8059AC82D2CA3f0",
+    "ERC20Options": "0x2a8fd99c19271f4f04b1b7b9c4f7cf264b626edb",
+    "WriterPool": "0xC4478743CA22803407B151893c05a921921AAc23"
+  }
+}
