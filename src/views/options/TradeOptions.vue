@@ -354,7 +354,6 @@ export default {
       );
       // console.log("fees:", fees);
       this.periodFee = fees.periodFee;
-      this.settlementFee = fees.settlementFee;
       this.strikeFee = fees.strikeFee;
       this.totalFee = fees.total;
 

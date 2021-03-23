@@ -51,7 +51,7 @@ export default {
       case "97": {
         //Binance Smart Chain Testnet
         store.addresses = Addresses.binanceTestnet;
-        store.networkNotSupported = true;
+        store.networkNotSupported = false;
         store.networkNotMainnet = true;
         break;
       }

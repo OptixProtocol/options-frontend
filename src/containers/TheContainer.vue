@@ -14,7 +14,7 @@
          <b-modal id="modal-center" centered title="Network not supported" v-model="show"  ok-only>
             <p class="my-4">
             This network currently isn't supported. Please change to a supported network and refresh the page.<br><br>
-            Testnets supported are: Rinkeby<br>
+            Testnets supported are: Rinkeby, Binance Smart Chain<br>
             Mainnets supported are: There are currently no mainnets supported
             </p>
         </b-modal>
