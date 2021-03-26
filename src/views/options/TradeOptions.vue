@@ -10,7 +10,7 @@ import MyOptions from "./MyOptions.vue";
 // import HDWalletProvider from "@truffle/hdwallet-provider";
 
 const toBN = Web3.utils.toBN;
-const gweiToCents = (x) => toBN(x).div(toBN(1e10));
+const gweiToCents = (x) => toBN(x).div(toBN(1e7));
 // const centsToGwei = (x) => toBN(x * 100).mul(toBN(1e6));
 const centsToGwei = (x) => x * 1e9;
 const gweiToWei = (x) => toBN(x).mul(toBN(1e9));
@@ -104,10 +104,10 @@ export default {
     },
     displayStrikePrice: {
       get() {
-        return this.strikePrice * 10;
+        return this.strikePrice ;
       },
       set(val) {
-        this.strikePrice = val / 10;
+        this.strikePrice = val ;
       },
     },
     displayTotal: {
@@ -126,7 +126,7 @@ export default {
         // console.log(
         //   ((gweiToCents(this.latestPrice) / 100) * this.displayTotal).toFixed(2)
         // );
-        return (gweiToCents(this.latestPrice) * 10 * this.displayTotal).toFixed(
+        return (gweiToCents(this.latestPrice) /100 * this.displayTotal).toFixed(
           2
         );
       },
@@ -140,20 +140,20 @@ export default {
 
     displayBreakeven: {
       get() {
-        console.log("this.strikePrice:", this.strikePrice);
-        console.log("this.displayTotalUSD:", this.displayTotalUSD);
-        console.log("this.optionSize:", this.optionSize);
+        // console.log("this.strikePrice:", this.strikePrice);
+        // console.log("this.displayTotalUSD:", this.displayTotalUSD);
+        // console.log("this.optionSize:", this.optionSize);
 
         if (this.sentiment == "long") {
           //strikePrice + (totalUSD/optionSize)
           return (
-            this.strikePrice * 10 +
+            this.strikePrice  +
             this.displayTotalUSD / this.optionSize
           ).toFixed(2);
         } else {
           //strikePrice - (totalUSD/optionSize)
           return (
-            this.strikePrice * 10 -
+            this.strikePrice  -
             this.displayTotalUSD / this.optionSize
           ).toFixed(2);
         }
@@ -163,7 +163,7 @@ export default {
       get() {
         return (
           this.money.prefix +
-          gweiToCents(this.latestPrice) * 10 * this.optionSize +
+          gweiToCents(this.latestPrice)/100 * this.optionSize +
           " " +
           this.money.suffix
         );
@@ -281,7 +281,8 @@ export default {
       return toBN(this.periodSelected);
     },
     getStrikePrice() {
-      return centsToGwei(Math.trunc(this.strikePrice));
+      // return centsToGwei(Math.trunc(this.strikePrice));
+      return this.strikePrice;
     },
     getOptionType() {
       return this.sentiment == "long"
@@ -339,20 +340,20 @@ export default {
     async getFees() {
       let _period = this.getPeriod();
       let _optionSize = this.getOptionSize();
-      let _strikePrice = this.getStrikePrice();
+      let _strikePrice = centsToGwei(this.getStrikePrice())/10;
       let _optionType = this.getOptionType();
-      // console.log("_period:", _period.toString());
-      // console.log("_optionSize:", _optionSize.toString());
-      // console.log("_strikePrice:", _strikePrice.toString());
-      // console.log("_optionType:", _optionType.toString());
-      // console.log("_latestPrice:", this.latestPrice);
+      console.log("_period:", _period.toString());
+      console.log("_optionSize:", _optionSize.toString());
+      console.log("_strikePrice:", _strikePrice.toString());
+      console.log("_optionType:", _optionType.toString());
+      console.log("_latestPrice:", this.latestPrice);
       let fees = await ERC20OptionsAPI.getFees(
         _period,
         _optionSize,
         _strikePrice,
         _optionType
       );
-      // console.log("fees:", fees);
+      console.log("fees:", fees);
       this.periodFee = fees.periodFee;
       this.strikeFee = fees.strikeFee;
       this.totalFee = fees.total;
@@ -388,7 +389,7 @@ export default {
           _strikePrice,
           _optionType
         );
-        console.log("optionId:", _optionId);
+        // console.log("optionId:", _optionId);
       } else {
         await store.connectUser();
       }

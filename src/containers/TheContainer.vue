@@ -43,7 +43,7 @@ export default {
     TheFooter
   },
    mounted() {
-     console.log("networkNotSupported:",store.networkNotSupported)
+    //  console.log("networkNotSupported:",store.networkNotSupported)
      if (store.networkNotSupported){
        this.show = true;
      }

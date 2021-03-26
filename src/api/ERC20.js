@@ -12,7 +12,7 @@ var ERC20API = {
     // console.log(account);
     let balance = await store.getSelectedTokenContract().methods
       .balanceOf(store.userAccount).call();
-    console.log("UserBalance:",balance);
+    // console.log("UserBalance:",balance);
     
     return balance;
   },

@@ -114,7 +114,7 @@ var LiquidityPoolAPI = {
         let pair1 = desc.substring(0, idx - 1);
         let pair2 = desc.substring(idx + 2)
         
-        console.log("iiiii:",i)
+        // console.log("iiiii:",i)
         let lp = await ERC20OptionsAPI.getLatestPrice(i);
         // let lp = 500000;
         

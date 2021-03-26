@@ -52,7 +52,7 @@ export default {
       this.tableItemsExpired = tableItems.filter(
         (x) => new Date(x.expiration * 1000) < now
       );
-      console.log("tableItems:", tableItems);
+      // console.log("tableItems:", tableItems);
 
       if (this.showActive) {
         this.tableItems = this.tableItemsActive;
