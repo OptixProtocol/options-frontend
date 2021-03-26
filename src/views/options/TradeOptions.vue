@@ -332,28 +332,31 @@ export default {
     async getPoolBalance() {
       this.poolBalance = await LiquidityPoolAPI.getTotalBalance();
       this.lockedAmount = await LiquidityPoolAPI.getLockedAmount();
+
+      // console.log("poolBalance:", this.poolBalance);
+      // console.log("lockedAmount:", this.lockedAmount);
+
       this.availableLiquidity = (
-        (this.poolBalance - this.lockedAmount) /
-        1e18
-      ).toFixed(2);
+        toBN(this.poolBalance - this.lockedAmount).div(toBN(1e18))
+      ).toString();
     },
     async getFees() {
       let _period = this.getPeriod();
       let _optionSize = this.getOptionSize();
       let _strikePrice = centsToGwei(this.getStrikePrice())/10;
       let _optionType = this.getOptionType();
-      console.log("_period:", _period.toString());
-      console.log("_optionSize:", _optionSize.toString());
-      console.log("_strikePrice:", _strikePrice.toString());
-      console.log("_optionType:", _optionType.toString());
-      console.log("_latestPrice:", this.latestPrice);
+      // console.log("_period:", _period.toString());
+      // console.log("_optionSize:", _optionSize.toString());
+      // console.log("_strikePrice:", _strikePrice.toString());
+      // console.log("_optionType:", _optionType.toString());
+      // console.log("_latestPrice:", this.latestPrice);
       let fees = await ERC20OptionsAPI.getFees(
         _period,
         _optionSize,
         _strikePrice,
         _optionType
       );
-      console.log("fees:", fees);
+      // console.log("fees:", fees);
       this.periodFee = fees.periodFee;
       this.strikeFee = fees.strikeFee;
       this.totalFee = fees.total;
@@ -381,7 +384,7 @@ export default {
       if (store.userWeb3Connected) {
         let _period = this.getPeriod();
         let _optionSize = this.getOptionSize();
-        let _strikePrice = this.getStrikePrice();
+        let _strikePrice = centsToGwei(this.getStrikePrice())/10;
         let _optionType = this.getOptionType();
         let _optionId = await ERC20OptionsAPI.setBuy(
           _period,
@@ -411,32 +414,17 @@ export default {
       this.getMarketDescriptions();
       this.getLatestPrice();
       this.getUserBalance();
+      this.getPoolBalance();
       this.getAllowance();
       this.getFees();
       this.updateFormIsValid();      
     }
-    // store.setSelectedMarketId(this.selectedMarketId);
-    // if (!store.userWeb3Connected) {
-    //   store.connectUser();
-    // }
-    // store.initInfura();
-    // EventBus.$on("store:initInfura", () => {
-    //   this.getMarketDescriptions();
-    //   this.getLatestPrice();
-    //   this.getPoolBalance();
-    //   if (store.userWeb3Connected) {
-    //     this.userWeb3Connected = store.userWeb3Connected;
-    //     this.getUserBalance();
-    //     this.getAllowance();
-    //     this.getFees();
-    //     this.updateFormIsValid();
-    //   }
-    // });
     EventBus.$on("userWeb3Connected", () => {
       this.userWeb3Connected = store.userWeb3Connected;
       store.setSelectedMarketId(this.selectedMarketId);
       this.getMarketDescriptions();
       this.getLatestPrice();
+      this.getPoolBalance();
       this.getUserBalance();
       this.getAllowance();
       this.getFees();

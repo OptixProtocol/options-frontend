@@ -36,7 +36,6 @@ var LiquidityPoolAPI = {
   },
 
   async getTotalBalance() {    
-    
     return await store.contracts.ERC20LiquidityPool.methods
       .totalBalance(store.getSelectedTokenContractAddress())
       .call();
@@ -152,39 +151,24 @@ var LiquidityPoolAPI = {
     let address = await store.contracts.ERC20LiquidityPool.methods
       .collatoralToken(marketId)
       .call();
-    // if (store.userWeb3Connected) {
+
       let w3 = new Web3(store.userWeb3Provider);
       return new w3.eth.Contract(
         store.abis.ERC20,
         address
       ); 
-    // } else {
-    //   console.log("store.infuraProvider:",store.infuraProvider)
-    //   let w3 = new Web3(store.infuraProvider);
-    //   return new w3.eth.Contract(
-    //     store.abis.ERC20,
-    //     address
-    //   );      
-    // }
   },
 
   async getTokenContractForPool(poolId) {
     let address = await store.contracts.ERC20LiquidityPool.methods
       .tokenPool(poolId)
       .call();
-    // if (store.userWeb3Connected) {
+
       let w3 = new Web3(store.userWeb3Provider);
       return new w3.eth.Contract(
         store.abis.ERC20,
         address
       ); 
-    // } else {
-    //   let w3 = new Web3(store.infuraProvider);
-    //   return new w3.eth.Contract(
-    //     store.abis.ERC20,
-    //     address
-    //   );      
-    // }
   },
 
   async setProvide(amount) {

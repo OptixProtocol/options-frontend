@@ -11,16 +11,12 @@ var ERC20API = {
       return 0;
     // console.log(account);
     let balance = await store.getSelectedTokenContract().methods
-      .balanceOf(store.userAccount).call();
-    // console.log("UserBalance:",balance);
-    
     return balance;
   },
 
   async getPoolBalance() {
     let balance = await store.getSelectedTokenContract().methods
       .balanceOf(store.addresses.ERC20LiquidityPool).call();    
-    console.log("poolBal:", balance);
     return balance;
   },
 

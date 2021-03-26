@@ -146,8 +146,8 @@ export default {
       //  this.getFees();
       this.updateButtonVariant();
     },
-    changeSelected() {
-      store.setSelectedPoolId(this.selectedPoolId);
+    async changeSelected() {
+      await store.setSelectedPoolId(this.selectedPoolId);
       this.selectedPoolSymbol = store.tokenPoolList[this.selectedPoolId].text;
       this.getUserBalance();
       this.getPoolBalance();

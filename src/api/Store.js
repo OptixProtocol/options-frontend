@@ -49,14 +49,11 @@ export const store = {
 
   
   getSelectedTokenContract() {
-    // console.log("store.selectedTokenContract:",store.selectedTokenContract);
     return store.selectedTokenContract;
   },
 
   getSelectedTokenContractAddress() {
-    // console.log("store.selectedTokenContractAddress:",store.selectedTokenContractAddress);
     return store.selectedTokenContractAddress;
-    // return store.tokenPoolContracts[store.selectedPoolId]._address
   },
   async setSelectedPoolId(_poolId) {
     store.selectedPoolId = _poolId;
@@ -64,10 +61,11 @@ export const store = {
     store.selectedTokenContract = contract;
     store.selectedTokenContractAddress = contract._address
   },
-  async setSelectedMarketId(_marketId) {
+  async setSelectedMarketId(_marketId) {    
     store.selectedMarketId = _marketId;
-    store.selectedTokenContract = await LiquidityPoolAPI.getTokenContractForMarket(_marketId);
-    store.selectedTokenContractAddress = store.selectedTokenContract._address;
+    let contract = await LiquidityPoolAPI.getTokenContractForMarket(_marketId);
+    store.selectedTokenContract = contract;
+    store.selectedTokenContractAddress = contract._address;
   },
 
 
