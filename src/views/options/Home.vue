@@ -6,7 +6,7 @@
     <vue-typed-js
       :strings="[
         'crypto currencies: BTC, ETH, LTC, XRP …',
-        'erc20/bip20 tokens: BNB, LINK, UNI, SUSHI …',
+        'erc20/bep20 tokens: BNB, LINK, UNI, SUSHI …',
         'forex: GBP, AUD, CHF, EUR, CNY, JPY, KRW …',
         'indicies: FTSE, Nikkei, the total crypto market cap …',
         'commodities: gold, silver, oil …',
