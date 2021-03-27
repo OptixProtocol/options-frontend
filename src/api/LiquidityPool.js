@@ -36,7 +36,7 @@ var LiquidityPoolAPI = {
   },
 
   async getTotalBalance() {    
-    return await store.contracts.ERC20LiquidityPool.methods
+      return await store.contracts.ERC20LiquidityPool.methods
       .totalBalance(store.getSelectedTokenContractAddress())
       .call();
   },

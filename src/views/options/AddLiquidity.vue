@@ -118,10 +118,10 @@ export default {
 
         this.lastProvideTimestamp = await LiquidityPoolAPI.getLastProvideTimestamp();
 
-        console.log("lastProvideTimestamp:", lastProvideTimestamp);
-        console.log("lockupPeriod:", lockupPeriod);
+        console.log("lastProvideTimestamp:", this.lastProvideTimestamp);
+        console.log("lockupPeriod:", this.lockupPeriod);
 
-        var d = new Date((+lastProvideTimestamp + +lockupPeriod) * 1000);
+        var d = new Date((+this.lastProvideTimestamp + +this.lockupPeriod) * 1000);
         this.lockedUntil = d.toLocaleString();
       }
 
@@ -130,8 +130,14 @@ export default {
       this.lockedPremium = lockedPremium;
       this.totalBalance = totalBalance;
       this.availableBalance = availableBalance;
-      this.poolSharePercent = (this.shareOf / this.totalBalance) * 100;
+      
+      console.log("shareOf:",this.shareOf);
+      console.log("totalBalance:",this.totalBalance);
 
+      this.poolSharePercent = (this.shareOf / this.totalBalance) * 100;
+      if(isNaN(this.poolSharePercent)){
+        this.poolSharePercent = 0;
+      }
       // this.lockedLiquidity = await LiquidityPoolAPI.getLockedLiquidity(
       //   this.tokenPoolContracts[this.selectedPoolId]._address
       // );
@@ -219,6 +225,7 @@ export default {
       store.setSelectedPoolId(this.selectedPoolId);
       this.getTokenPoolList();
       this.getUserBalance();
+       this.getProtocolFee();
       this.getPoolStats();
       this.getAllowance();
       this.updateButtonVariant();
@@ -230,6 +237,7 @@ export default {
       store.setSelectedPoolId(this.selectedPoolId);
       this.getTokenPoolList();
       this.getUserBalance();
+       this.getProtocolFee();
       this.getPoolStats();
       this.getAllowance();
       this.updateButtonVariant();
@@ -242,21 +250,6 @@ export default {
       this.updateButtonVariant();
     });
 
-    EventBus.$on("store:initInfura", () => {
-      store.setSelectedPoolId(this.selectedPoolId);
-      this.getTokenPoolList();
-      this.getPoolStats();
-      this.getPoolBalance();
-      this.getProtocolFee();
-
-      if (store.userWeb3Connected) {
-        this.userWeb3Connected = store.userWeb3Connected;
-        this.getUserBalance();
-        this.getPoolStats();
-        this.getAllowance();
-        this.updateButtonVariant();
-      }
-    });
 
     EventBus.$on("setProvide:receipt", () => {
       this.getUserBalance();

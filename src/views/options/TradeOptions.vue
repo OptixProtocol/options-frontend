@@ -163,7 +163,7 @@ export default {
       get() {
         return (
           this.money.prefix +
-          gweiToCents(this.latestPrice)/100 * this.optionSize +
+          (gweiToCents(this.latestPrice)/100 * this.optionSize).toFixed(2) +
           " " +
           this.money.suffix
         );
