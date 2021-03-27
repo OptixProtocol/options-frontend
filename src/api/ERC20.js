@@ -9,8 +9,8 @@ var ERC20API = {
   async getUserBalance() {
     if (store.userAccount == null)
       return 0;
-    // console.log(account);
     let balance = await store.getSelectedTokenContract().methods
+      .balanceOf(store.userAccount).call();  
     return balance;
   },
 
