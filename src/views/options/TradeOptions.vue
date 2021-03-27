@@ -218,7 +218,6 @@ export default {
     },
     async getMarketDescriptions() {
       this.tokenSymbols = await LiquidityPoolAPI.getMarketList();
-      // this.selectedMarketId = store.selectedMarketId;
     },
     async getLatestPrice() {
       this.latestPrice = await ERC20OptionsAPI.getLatestPrice();
@@ -263,6 +262,7 @@ export default {
 
       this.getLatestPrice();
       this.getUserBalance();
+      this.getPoolBalance();
       this.getAllowance();
       this.getFees();
       this.updateFormIsValid();
@@ -281,7 +281,6 @@ export default {
       return toBN(this.periodSelected);
     },
     getStrikePrice() {
-      // return centsToGwei(Math.trunc(this.strikePrice));
       return this.strikePrice;
     },
     getOptionType() {
@@ -333,8 +332,6 @@ export default {
       this.poolBalance = await LiquidityPoolAPI.getTotalBalance();
       this.lockedAmount = await LiquidityPoolAPI.getLockedAmount();
 
-      // console.log("poolBalance:", this.poolBalance);
-      // console.log("lockedAmount:", this.lockedAmount);
 
       this.availableLiquidity = (
         toBN(this.poolBalance - this.lockedAmount).div(toBN(1e18))

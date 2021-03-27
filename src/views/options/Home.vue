@@ -5,11 +5,13 @@
     <br />
     <vue-typed-js
       :strings="[
-        'ethereum gas prices',
-        'crypto coins: bitcoin, ethereum, litecoin, xrp etc.',
-        'crypto tokens: uniswap, sushiswap, chainlink etc.',
-        'indexes',
-        'oil and gold',
+        'crypto currencies: BTC, ETH, LTC, XRP …',
+        'erc20/bip20 tokens: BNB, LINK, UNI, SUSHI …',
+        'forex: GBP, AUD, CHF, EUR, CNY, JPY, KRW …',
+        'indicies: FTSE, Nikkei, the total crypto market cap …',
+        'commodities: gold, silver, oil …',
+        'ethereum gas',
+        'any new Chainlink price oracles as they are created.<br>The sky is the limit!'
       ]"
       :loop="true"
       :typeSpeed="50"
