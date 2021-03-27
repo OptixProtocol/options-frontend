@@ -1,6 +1,7 @@
 <script>
 import { EventBus } from "../../api/EventBus";
 import ERC20OptionsAPI from "../../api/ERC20Options";
+import LiquidityPoolAPI from "../../api/LiquidityPool";
 import { ethers } from "ethers";
 import { store } from "../../api/Store";
 
@@ -8,7 +9,8 @@ const toBN = ethers.BigNumber.from;
 // BigNumber.config({ EXPONENTIAL_AT: 1e18 });
 const gweiToCents = (x) => toBN(x).div(toBN(1e10));
 const gweiToEth = (x) => toBN(x).div(toBN(1e9));
-const centsToGwei = (x) => toBN(x).mul(toBN(1e9));
+const oracleToCents = (x) => x / 100000000;
+const centsToGwei = (x) => x * 1e9;
 const Short = 1;
 const Long = 2;
 const Active = 1;
@@ -41,7 +43,9 @@ export default {
   },
   methods: {
     async getMyOptions() {
+      
       let tableItems = await ERC20OptionsAPI.getMyOptions();
+      await LiquidityPoolAPI.getMarketList();
 
       var now = new Date();
       // now.setDate(now.getDate() + 28 * 3);
@@ -52,7 +56,7 @@ export default {
       this.tableItemsExpired = tableItems.filter(
         (x) => new Date(x.expiration * 1000) < now
       );
-      // console.log("tableItems:", tableItems);
+      console.log("tableItems:", tableItems);
 
       if (this.showActive) {
         this.tableItems = this.tableItemsActive;
@@ -76,6 +80,8 @@ export default {
       return item.optionType == Short ? "Short(Put)" : "Long(Call)";
     },
     getMarket(item) {
+      console.log("getMarket:item:",item)
+      console.log("store.marketList:",store.marketList)
       return store.marketList[item.marketId].text;
       // return "m";
     },
@@ -83,9 +89,11 @@ export default {
       return gweiToEth(item.optionSize);
     },
     getStrikePrice(item) {
-      return gweiToCents(item.strike) * 100;
+      return oracleToCents(item.strike);
+      // return gweiToCents(item.strike) * 100;
     },
     getLatestPrice(item) {
+      // console.log("latest:",store.marketList[item.marketId].latestPrice)
       return gweiToCents(store.marketList[item.marketId].latestPrice) * 10;
     },
     getPremiumUSD(item) {
@@ -122,6 +130,7 @@ export default {
     },
     getProfitLoss(item) {
       // console.log("getBreakeven:", +this.getBreakeven(item));
+      // console.log("getLatestPrice:", +this.getLatestPrice(item));
       this.getBreakeven(item);
       if (item.optionType == Long) {
         return (+this.getLatestPrice(item) - +this.getBreakeven(item)).toFixed(
@@ -146,8 +155,8 @@ export default {
     //   return this.timeDiffCalc(new Date(item.expiration * 1000), Date.now());
     // },
     displayExercise(item) {
-      console.log("item.strike:", item.strike / 1e8); //gwei
-      console.log("getLatestPrice:", +this.getLatestPrice(item));
+      // console.log("item.strike:", item.strike / 1e8); //gwei
+      // console.log("getLatestPrice:", +this.getLatestPrice(item));
       if (item.state != Active) {
         return false;
       }
@@ -165,6 +174,9 @@ export default {
     },
   },
   mounted() {
+    if (store.userWeb3Connected){
+      this.getMyOptions();
+    }
     EventBus.$on("userWeb3Connected", () => {
       this.getMyOptions();
     });
