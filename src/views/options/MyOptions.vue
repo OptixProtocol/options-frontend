@@ -80,8 +80,8 @@ export default {
       return item.optionType == Short ? "Short(Put)" : "Long(Call)";
     },
     getMarket(item) {
-      console.log("getMarket:item:",item)
-      console.log("store.marketList:",store.marketList)
+      // console.log("getMarket:item:",item)
+      // console.log("store.marketList:",store.marketList)
       return store.marketList[item.marketId].text;
       // return "m";
     },
@@ -94,7 +94,7 @@ export default {
     },
     getLatestPrice(item) {
       // console.log("latest:",store.marketList[item.marketId].latestPrice)
-      return gweiToCents(store.marketList[item.marketId].latestPrice) * 10;
+      return oracleToCents(store.marketList[item.marketId].latestPrice)/10;
     },
     getPremiumUSD(item) {
       return (+this.getLatestPrice(item) * +item.premium) / 1e18;
@@ -155,18 +155,14 @@ export default {
     //   return this.timeDiffCalc(new Date(item.expiration * 1000), Date.now());
     // },
     displayExercise(item) {
-      // console.log("item.strike:", item.strike / 1e8); //gwei
-      // console.log("getLatestPrice:", +this.getLatestPrice(item));
       if (item.state != Active) {
         return false;
       }
 
-      if (item.optionType == Long) {
-        // require(option.strike <= currentPrice, "Current price is too low");
-        return item.strike / 1e8 <= +this.getLatestPrice(item);
+      if (item.optionType == Long) {  
+        return +item.strike >= +store.marketList[item.marketId].latestPrice/10;
       } else {
-        // require(option.strike >= currentPrice, "Current price is too high");
-        return item.strike / 1e8 >= +this.getLatestPrice(item);
+        return +item.strike <= +store.marketList[item.marketId].latestPrice/10;
       }
     },
     async setExercise(item) {
