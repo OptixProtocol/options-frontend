@@ -219,28 +219,31 @@ export default {
     },
   },
   mounted() {
-    // store.initInfura();
+
     this.userWeb3Connected = store.userWeb3Connected;
     if (store.userWeb3Connected){
-      store.setSelectedPoolId(this.selectedPoolId);
-      this.getTokenPoolList();
-      this.getUserBalance();
-       this.getProtocolFee();
-      this.getPoolStats();
-      this.getAllowance();
-      this.updateButtonVariant();
+      store.setSelectedPoolId(this.selectedPoolId).then( () => { 
+        this.getTokenPoolList();
+        this.getPoolBalance();
+        this.getUserBalance();
+        this.getProtocolFee();
+        this.getPoolStats();
+        this.getAllowance();
+        this.updateButtonVariant();
+      });
     }
-
 
     EventBus.$on("userWeb3Connected", () => {
       this.userWeb3Connected = store.userWeb3Connected;
-      store.setSelectedPoolId(this.selectedPoolId);
-      this.getTokenPoolList();
-      this.getUserBalance();
-       this.getProtocolFee();
-      this.getPoolStats();
-      this.getAllowance();
-      this.updateButtonVariant();
+      store.setSelectedPoolId(this.selectedPoolId).then( () => {        
+        this.getTokenPoolList();
+        this.getPoolBalance();
+        this.getUserBalance();
+        this.getProtocolFee();
+        this.getPoolStats();
+        this.getAllowance();
+        this.updateButtonVariant();
+      });
     });
 
     EventBus.$on("userWeb3Disconnected", () => {
@@ -249,7 +252,6 @@ export default {
       this.allowance = 0;
       this.updateButtonVariant();
     });
-
 
     EventBus.$on("setProvide:receipt", () => {
       this.getUserBalance();

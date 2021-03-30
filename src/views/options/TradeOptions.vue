@@ -407,25 +407,27 @@ export default {
   mounted() {
     if (store.userWeb3Connected){
       this.userWeb3Connected = store.userWeb3Connected;
-      store.setSelectedMarketId(this.selectedMarketId);
-      this.getMarketDescriptions();
-      this.getLatestPrice();
-      this.getUserBalance();
-      this.getPoolBalance();
-      this.getAllowance();
-      this.getFees();
-      this.updateFormIsValid();      
+      store.setSelectedMarketId(this.selectedMarketId).then( () => { 
+        this.getMarketDescriptions();
+        this.getLatestPrice();
+        this.getUserBalance();
+        this.getPoolBalance();
+        this.getAllowance();
+        this.getFees();
+        this.updateFormIsValid();
+      });
     }
     EventBus.$on("userWeb3Connected", () => {
       this.userWeb3Connected = store.userWeb3Connected;
-      store.setSelectedMarketId(this.selectedMarketId);
-      this.getMarketDescriptions();
-      this.getLatestPrice();
-      this.getPoolBalance();
-      this.getUserBalance();
-      this.getAllowance();
-      this.getFees();
-      this.updateFormIsValid();
+      store.setSelectedMarketId(this.selectedMarketId).then( () => { 
+        this.getMarketDescriptions();
+        this.getLatestPrice();
+        this.getPoolBalance();
+        this.getUserBalance();
+        this.getAllowance();
+        this.getFees();
+        this.updateFormIsValid();
+      });
     });
     EventBus.$on("userWeb3Disconnected", () => {
       this.userWeb3Connected = store.userWeb3Connected;
