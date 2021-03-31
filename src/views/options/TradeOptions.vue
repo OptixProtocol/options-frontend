@@ -95,10 +95,6 @@ export default {
       },
 
       set(val) {
-        // console.log("val:", val);
-        // console.log("this.optionSize:", this.optionSize);
-        // console.log("this.strikePrice:", this.strikePrice);
-
         this.optionSize = val / this.displayStrikePrice;
       },
     },
@@ -112,20 +108,11 @@ export default {
     },
     displayTotal: {
       get() {
-        // console.log("this.total:", this.total);
         return (this.totalPremium / 1e18).toFixed(5);
       },
     },
     displayTotalUSD: {
       get() {
-        // console.log(
-        //   "gweiToCents(this.latestPrice):",
-        //   gweiToCents(this.latestPrice).toString()
-        // );
-        // console.log("this.displayTotal:", this.displayTotal);
-        // console.log(
-        //   ((gweiToCents(this.latestPrice) / 100) * this.displayTotal).toFixed(2)
-        // );
         return (gweiToCents(this.latestPrice) /100 * this.displayTotal).toFixed(
           2
         );
@@ -140,10 +127,6 @@ export default {
 
     displayBreakeven: {
       get() {
-        // console.log("this.strikePrice:", this.strikePrice);
-        // console.log("this.displayTotalUSD:", this.displayTotalUSD);
-        // console.log("this.optionSize:", this.optionSize);
-
         if (this.sentiment == "long") {
           //strikePrice + (totalUSD/optionSize)
           return (
@@ -333,28 +316,16 @@ export default {
         //   this.formIsValidText = "Pool capacity reached";
         //   return;
         // }
-// console.log("allowance:",this.allowance)
-// console.log("totalPremium:",this.totalPremium)
         this.formIsValid = true;
-        // if (this.allowance >= this.totalPremium) {
-        //   this.approveVariant = "secondary";
-        //   this.provideVariant = "success";
-        // } else {
-        //   this.approveVariant = "success";
-        //   this.provideVariant = "secondary";
-        // }
       }
     },
     async getUserBalance() {
       this.userBalance = await ERC20API.getUserBalance();
     },
     async getPoolBalance() {
-      this.poolBalance = await LiquidityPoolAPI.getTotalBalance();
-      this.lockedAmount = await LiquidityPoolAPI.getLockedAmount();
-
-
+      this.poolBalance = await LiquidityPoolAPI.getAvailableBalance();
       this.availableLiquidity = (
-        toBN(this.poolBalance - this.lockedAmount).div(toBN(1e18))
+        toBN(this.poolBalance).div(toBN(1e18))
       ).toString();
     },
     async getFees() {
@@ -414,15 +385,6 @@ export default {
         await store.connectUser();
       }
     },
-    // updateButtonVariant() {
-    //   if (this.allowance >= this.optionSize) {
-    //     this.approveVariant = "secondary";
-    //     this.provideVariant = "success";
-    //   } else {
-    //     this.approveVariant = "success";
-    //     this.provideVariant = "secondary";
-    //   }
-    // },
   },
   mounted() {
     if (store.userWeb3Connected){
@@ -464,6 +426,7 @@ export default {
     EventBus.$on("ERC20Options:create:receipt", () => {
       this.getUserBalance();
       this.getPoolBalance();
+      this.getAllowance();
       this.getFees();
     });
   },
