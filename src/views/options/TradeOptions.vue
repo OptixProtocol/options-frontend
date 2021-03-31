@@ -73,7 +73,7 @@ export default {
       balanceFee: 0,
       lpFee: 0,
       totalFee: 0,
-      total: 0,
+      totalPremium: 0,
       totalBalance: 0,
       lockedAmount: 0,
       buyButtonVariant: "secondary",
@@ -113,7 +113,7 @@ export default {
     displayTotal: {
       get() {
         // console.log("this.total:", this.total);
-        return (this.total / 1e18).toFixed(5);
+        return (this.totalPremium / 1e18).toFixed(5);
       },
     },
     displayTotalUSD: {
@@ -210,6 +210,25 @@ export default {
         return (this.optionValue / this.displayTotalUSD).toFixed(0);
       },
     },
+    displayApproveVariant: {
+      get(){
+        if (this.allowance >= this.totalPremium) {
+         return "secondary";
+        } else {
+          return "success";
+        }
+      }
+    },
+    displayProvideVariant: {
+      get(){
+        if (this.allowance >= this.totalPremium) {
+          return "success";
+        } else {    
+          return "secondary";
+        }
+      }
+    }
+
   },
   methods: {
     async getAllowance() {
@@ -314,15 +333,16 @@ export default {
         //   this.formIsValidText = "Pool capacity reached";
         //   return;
         // }
-
+// console.log("allowance:",this.allowance)
+// console.log("totalPremium:",this.totalPremium)
         this.formIsValid = true;
-        if (this.allowance >= this.optionSize) {
-          this.approveVariant = "secondary";
-          this.provideVariant = "success";
-        } else {
-          this.approveVariant = "success";
-          this.provideVariant = "secondary";
-        }
+        // if (this.allowance >= this.totalPremium) {
+        //   this.approveVariant = "secondary";
+        //   this.provideVariant = "success";
+        // } else {
+        //   this.approveVariant = "success";
+        //   this.provideVariant = "secondary";
+        // }
       }
     },
     async getUserBalance() {
@@ -364,7 +384,7 @@ export default {
         _strikePrice,
         _optionType
       );
-      this.total = premium.total;
+      this.totalPremium = premium.total;
 
       // console.log("premium:", premium);
       this.protocolFee = fees.protocolFee;
@@ -374,8 +394,8 @@ export default {
       this.lpFee = fees.lpFee;
     },
     async setApprove() {
-      await ERC20API.setApproveERC20Options(this.total);
-      this.updateButtonVariant();
+      await ERC20API.setApproveERC20Options(this.totalPremium);
+      // this.updateButtonVariant();
     },
     async setBuy() {
       if (store.userWeb3Connected) {
@@ -394,15 +414,15 @@ export default {
         await store.connectUser();
       }
     },
-    updateButtonVariant() {
-      if (this.allowance >= this.optionSize) {
-        this.approveVariant = "secondary";
-        this.provideVariant = "success";
-      } else {
-        this.approveVariant = "success";
-        this.provideVariant = "secondary";
-      }
-    },
+    // updateButtonVariant() {
+    //   if (this.allowance >= this.optionSize) {
+    //     this.approveVariant = "secondary";
+    //     this.provideVariant = "success";
+    //   } else {
+    //     this.approveVariant = "success";
+    //     this.provideVariant = "secondary";
+    //   }
+    // },
   },
   mounted() {
     if (store.userWeb3Connected){
@@ -437,6 +457,7 @@ export default {
       this.updateFormIsValid();
     });
     EventBus.$on("ERC20:setApproveERC20Options:receipt", () => {
+
       this.getAllowance();
       this.updateFormIsValid();
     });
@@ -630,12 +651,12 @@ export default {
             </b-row>
             <b-row v-if="formIsValid" class="mt-2">
               <b-col md="6" class="d-flex justify-content-center">
-                <b-button block :variant="approveVariant" @click="setApprove"
+                <b-button block :variant="displayApproveVariant" @click="setApprove"
                   >Approve {{ displayCollateralToken }}</b-button
                 >
               </b-col>
               <b-col md="6" class="d-flex justify-content-center">
-                <b-button block :variant="provideVariant" @click="setBuy"
+                <b-button block :variant="displayProvideVariant" @click="setBuy"
                   >Buy</b-button
                 >
               </b-col>
