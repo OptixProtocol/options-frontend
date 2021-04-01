@@ -11,9 +11,16 @@ const gweiToCents = (x) => toBN(x).div(toBN(1e10));
 const gweiToEth = (x) => toBN(x).div(toBN(1e9));
 const oracleToCents = (x) => x / 100000000;
 const centsToGwei = (x) => x * 1e9;
+
+//option type
 const Short = 1;
 const Long = 2;
+
+//option status
+const Inactive = 0;
 const Active = 1;
+const Exercised = 2;
+const Expired = 3;
 
 export default {
   data() {
@@ -165,6 +172,12 @@ export default {
         return +item.strike >= +store.marketList[item.marketId].latestPrice/10;
       }
     },
+    cantDisplayExercise(item) {
+      if (item.state == Exercised) {
+        return "Exercised";
+      }
+
+    },
     async setExercise(item) {
       let response = await ERC20OptionsAPI.setExercise(item.id);
     },
@@ -288,6 +301,9 @@ export default {
               >Exercise</b-button
             >
           </div>
+          <div v-if="! displayExercise(item)">
+            <div>{{ cantDisplayExercise(item) }}</div>
+          </div>          
         </td>
       </CDataTable>
     </CCardBody>
