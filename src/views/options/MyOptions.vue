@@ -160,9 +160,9 @@ export default {
       }
 
       if (item.optionType == Long) {  
-        return +item.strike >= +store.marketList[item.marketId].latestPrice/10;
-      } else {
         return +item.strike <= +store.marketList[item.marketId].latestPrice/10;
+      } else {
+        return +item.strike >= +store.marketList[item.marketId].latestPrice/10;
       }
     },
     async setExercise(item) {
