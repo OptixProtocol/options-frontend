@@ -86,10 +86,10 @@ export default {
       // return "m";
     },
     getSize(item) {
-      return gweiToEth(item.optionSize);
+      return (item.optionSize / 1e9).toFixed(4);
     },
     getStrikePrice(item) {
-      return oracleToCents(item.strike);
+      return oracleToCents(item.strike).toFixed(2);
       // return gweiToCents(item.strike) * 100;
     },
     getLatestPrice(item) {

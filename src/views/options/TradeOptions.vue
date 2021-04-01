@@ -249,6 +249,7 @@ export default {
         this.sentiment = "long";
       }
       this.getFees();
+      this.updateFormIsValid();
     },
     changeOptionSize() {
       this.getFees();
