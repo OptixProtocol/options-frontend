@@ -252,7 +252,9 @@ export default {
       this.updateFormIsValid();
     },
     changeOptionSize() {
+      
       this.getFees();
+      this.updateFormIsValid();
     },
     changeOptionValue() {
       this.getFees();
@@ -308,15 +310,14 @@ export default {
           return;
         }
 
-        //TODO: Pool capacity reached validation
-        // if (
-        //   +this.lockedAmount + +gweiToWei(this.getOptionSize()) >
-        //   +this.poolBalance
-        // ) {
-        //   this.formIsValid = false;
-        //   this.formIsValidText = "Pool capacity reached";
-        //   return;
-        // }
+        // console.log("optionSize:",this.getOptionSize()*1e9);
+        // console.log("poolBalance:",this.poolBalance);
+        if (+(this.getOptionSize()*1e9) > +this.poolBalance){
+          this.formIsValid = false;
+          this.formIsValidText = "Pool capacity reached";
+          return;
+        }
+
         this.formIsValid = true;
       }
     },
@@ -338,7 +339,7 @@ export default {
       // console.log("_optionSize:", _optionSize.toString());
       // console.log("_strikePrice:", _strikePrice.toString());
       // console.log("_optionType:", _optionType.toString());
-      // console.log("_latestPrice:", this.latestPrice);
+      console.log("_latestPrice:", this.latestPrice);
       let fees = await ERC20OptionsAPI.getFees(
         _period,
         _optionSize,

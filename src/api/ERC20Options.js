@@ -4,7 +4,8 @@ import LiquidityPoolAPI from "../api/LiquidityPool";
 import { EventBus } from "../api/EventBus";
 
 var ERC20OptionsAPI = {
-    OptionType: { Put: 1, Call: 2 },
+    OptionType: { Invalid:0, Put:1, Call:2 },
+    OptionState:  {Inactive:0, Active:1, Exercised:2, Expired:3},
 
     async getProtocolFee() {
         let protocolFee = await store.contracts.ERC20Options.methods

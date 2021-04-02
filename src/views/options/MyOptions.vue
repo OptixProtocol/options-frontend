@@ -12,15 +12,15 @@ const gweiToEth = (x) => toBN(x).div(toBN(1e9));
 const oracleToCents = (x) => x / 100000000;
 const centsToGwei = (x) => x * 1e9;
 
-//option type
-const Short = 1;
-const Long = 2;
+// //option type
+// const Short = 1;
+// const Long = 2;
 
-//option status
-const Inactive = 0;
-const Active = 1;
-const Exercised = 2;
-const Expired = 3;
+// //option status
+// const Inactive = 0;
+// const Active = 1;
+// const Exercised = 2;
+// const Expired = 3;
 
 export default {
   data() {
@@ -84,7 +84,7 @@ export default {
     },
 
     getType(item) {
-      return item.optionType == Short ? "Short(Put)" : "Long(Call)";
+      return item.optionType == ERC20OptionsAPI.OptionType.Put ? "Short(Put)" : "Long(Call)";
     },
     getMarket(item) {
       // console.log("getMarket:item:",item)
@@ -115,7 +115,7 @@ export default {
 
       //premiumUSD= (gweiToCents(this.latestPrice) * 10 * this.displayTotal)
 
-      if (item.optionType == Long) {
+      if (item.optionType == ERC20OptionsAPI.OptionType.Call) {
         //strikePrice + (totalUSD/optionSize)
         return (
           item.strike / 1e8 +
@@ -139,7 +139,7 @@ export default {
       // console.log("getBreakeven:", +this.getBreakeven(item));
       // console.log("getLatestPrice:", +this.getLatestPrice(item));
       this.getBreakeven(item);
-      if (item.optionType == Long) {
+      if (item.optionType == ERC20OptionsAPI.OptionType.Call) {
         return (+this.getLatestPrice(item) - +this.getBreakeven(item)).toFixed(
           2
         );
@@ -162,18 +162,18 @@ export default {
     //   return this.timeDiffCalc(new Date(item.expiration * 1000), Date.now());
     // },
     displayExercise(item) {
-      if (item.state != Active) {
+      if (item.state != ERC20OptionsAPI.OptionState.Active) {
         return false;
       }
 
-      if (item.optionType == Long) {  
+      if (item.optionType == ERC20OptionsAPI.OptionType.Call) {  
         return +item.strike <= +store.marketList[item.marketId].latestPrice/10;
       } else {
         return +item.strike >= +store.marketList[item.marketId].latestPrice/10;
       }
     },
     cantDisplayExercise(item) {
-      if (item.state == Exercised) {
+      if (item.state == ERC20OptionsAPI.OptionState.Exercised) {
         return "Exercised";
       }
 
