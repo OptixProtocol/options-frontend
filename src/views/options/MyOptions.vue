@@ -162,7 +162,7 @@ export default {
     //   return this.timeDiffCalc(new Date(item.expiration * 1000), Date.now());
     // },
     displayExercise(item) {
-      if (item.state != ERC20OptionsAPI.OptionState.Active) {
+      if (! this.showActive || item.state != ERC20OptionsAPI.OptionState.Active) {
         return false;
       }
 
@@ -175,6 +175,9 @@ export default {
     cantDisplayExercise(item) {
       if (item.state == ERC20OptionsAPI.OptionState.Exercised) {
         return "Exercised";
+      }
+      if (! this.showActive){
+        return "Expired";
       }
 
     },
