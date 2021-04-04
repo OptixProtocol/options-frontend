@@ -333,13 +333,13 @@ export default {
     async getFees() {
       let _period = this.getPeriod();
       let _optionSize = this.getOptionSize();
-      let _strikePrice = centsToGwei(this.getStrikePrice())/10;
+      let _strikePrice = (centsToGwei(this.getStrikePrice())/10).toFixed(0);
       let _optionType = this.getOptionType();
       // console.log("_period:", _period.toString());
       // console.log("_optionSize:", _optionSize.toString());
       // console.log("_strikePrice:", _strikePrice.toString());
       // console.log("_optionType:", _optionType.toString());
-      console.log("_latestPrice:", this.latestPrice);
+      // console.log("_latestPrice:", this.latestPrice);
       let fees = await ERC20OptionsAPI.getFees(
         _period,
         _optionSize,
@@ -374,7 +374,7 @@ export default {
       if (store.userWeb3Connected) {
         let _period = this.getPeriod();
         let _optionSize = this.getOptionSize();
-        let _strikePrice = centsToGwei(this.getStrikePrice())/10;
+        let _strikePrice = (centsToGwei(this.getStrikePrice())/10).toFixed(0);
         let _optionType = this.getOptionType();
         let _optionId = await ERC20OptionsAPI.setBuy(
           _period,
