@@ -145,7 +145,7 @@ var ERC20OptionsAPI = {
             store.abis.ERC20Options,
             store.addresses.ERC20Options
         );
-        const exerciseEvent = contract.methods
+        let exerciseEvent = await contract.methods
             .exercise(optionId)
             .send({ from: store.userAccount })
             .on(
@@ -154,7 +154,6 @@ var ERC20OptionsAPI = {
                     EventBus.$emit("ERC20Options:exercise:receipt");
                 }.bind(this)
             );                  
-        
 
         return exerciseEvent;
     },
