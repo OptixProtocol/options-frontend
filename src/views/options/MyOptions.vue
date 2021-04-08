@@ -136,18 +136,41 @@ export default {
       //     ).toFixed(2);
     },
     getProfitLoss(item) {
-      // console.log("getBreakeven:", +this.getBreakeven(item));
-      // console.log("getLatestPrice:", +this.getLatestPrice(item));
-      this.getBreakeven(item);
+      console.log("latest:",oracleToCents(store.marketList[item.marketId].latestPrice)/10)
+      console.log("item.optionSize:", +item.optionSize/1e9); 
+      console.log("item.strike:", oracleToCents(item.strike)); 
+      console.log("item.premium:", item.premium/1e18); 
+
+
+//call
+      let latestPrice = oracleToCents(store.marketList[item.marketId].latestPrice)/10;
+      let size = +item.optionSize/1e9;
+      let strike = oracleToCents(item.strike);
+      let prem = item.premium/1e18;
+
+      let profit = 0
       if (item.optionType == ERC20OptionsAPI.OptionType.Call) {
-        return (+this.getLatestPrice(item) - +this.getBreakeven(item)).toFixed(
-          2
-        );
-      } else {
-        return (+this.getBreakeven(item) - +this.getLatestPrice(item)).toFixed(
-          2
-        );
+        profit = ((((+latestPrice - +strike)*+size)/+strike)-+prem).toFixed(2);
+        console.log("call profit:",profit);
       }
+      else{
+        profit = ((((+strike - +latestPrice)*+size)/+strike)-+prem).toFixed(2);
+        // profit = (strike - latestPrice);
+        console.log("put profit:",profit);
+      }
+      return profit;
+
+
+      // this.getBreakeven(item);
+      // if (item.optionType == ERC20OptionsAPI.OptionType.Call) {
+      //   return (+this.getLatestPrice(item) - +this.getBreakeven(item)).toFixed(
+      //     2
+      //   );
+      // } else {
+      //   return (+this.getBreakeven(item) - +this.getLatestPrice(item)).toFixed(
+      //     2
+      //   );
+      // }
     },
     getPlacedAt(item) {
       return "pa";
