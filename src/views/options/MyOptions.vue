@@ -136,10 +136,10 @@ export default {
       //     ).toFixed(2);
     },
     getProfitLoss(item) {
-      console.log("latest:",oracleToCents(store.marketList[item.marketId].latestPrice)/10)
-      console.log("item.optionSize:", +item.optionSize/1e9); 
-      console.log("item.strike:", oracleToCents(item.strike)); 
-      console.log("item.premium:", item.premium/1e18); 
+      // console.log("latest:",oracleToCents(store.marketList[item.marketId].latestPrice)/10)
+      // console.log("item.optionSize:", +item.optionSize/1e9); 
+      // console.log("item.strike:", oracleToCents(item.strike)); 
+      // console.log("item.premium:", item.premium/1e18); 
 
 
 //call
