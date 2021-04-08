@@ -120,12 +120,12 @@ export default {
         return (
           item.strike / 1e8 +
           this.getPremiumUSD(item) * (+item.optionSize / 1e9)
-        );
+        )/10;
       } else {
         return (
           item.strike / 1e8 -
           this.getPremiumUSD(item) * (+item.optionSize / 1e9)
-        );
+        )/10;
       }
 
       // if (this.sentiment == "long") {

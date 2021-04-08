@@ -42,6 +42,12 @@ var ERC20OptionsAPI = {
 
 
     async getFees(period, optionSize, strikePrice, optionType) {
+        // console.log("<<Fees>>")
+        // console.log("period:" +period);
+        // console.log("optionSize:" +optionSize.toFixed(0).toString());
+        // console.log("strikePrice:" +strikePrice.toString());
+        // console.log("optionType:" +optionType);
+        // console.log("optionMarketId:" + store.selectedMarketId);                
         return await store.contracts.ERC20Options.methods
             .fees(period, optionSize.toFixed(0).toString(), strikePrice.toString(), optionType, store.selectedMarketId)
             .call();
