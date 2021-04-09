@@ -72,6 +72,12 @@ var LiquidityPoolAPI = {
       .call();
   },
 
+  async getMaxInvest(){
+    return await store.contracts.ERC20LiquidityPool.methods
+      .maxInvest(store.getSelectedTokenContractAddress())
+      .call();
+  },  
+
   // async getLockedLiquidity(tokenAddress) {    
   //   return await store.contracts.ERC20LiquidityPool.methods
   //     .lockedLiquidity(tokenAddress)

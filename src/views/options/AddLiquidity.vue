@@ -43,6 +43,7 @@ export default {
       lockedUntil: null,
       lastProvideTimestamp: 0,
       lockupPeriod: 0,
+      maxInvest: 0,
       addWithdrawOptions: [
         { value: "add", text: "Add Liquidity" },
         { value: "withdraw", text: "Withdraw Liquidity" },
@@ -60,6 +61,34 @@ export default {
         );
       },
     },
+    validInput: {
+        get() {
+          if(this.userWeb3Connected && this.amount > 0 && this.userBalance > 0){
+            // console.log("maxInvest:",this.maxInvest)
+            // console.log("ethToWei(this.amount):",ethToWei(+this.amount).toString())
+            if (ethToWei(this.amount).toString() > this.maxInvest)
+               return false;
+            else
+              return true;
+            
+          }
+          else {
+            return false;
+          }
+        }
+    },
+    invalidInputMessage: {
+        get() {
+           if(this.amount == 0)
+            return  "Enter Amount";
+          
+           if(this.userBalance == 0)
+            return "No balance";
+
+           if(ethToWei(+this.amount).toString()>this.maxInvest)
+            return "Investor limit reached"; 
+        }
+    }    
   },
   methods: {
     async getProtocolFee() {
@@ -83,7 +112,10 @@ export default {
       this.selectedPoolSymbol = this.tokenPoolList[this.selectedPoolId].text;
     },
     getApproved() {},
-
+    async getMaxInvest() {
+      this.maxInvest = await LiquidityPoolAPI.getMaxInvest();
+      console.log("maxxxInvest:",this.maxInvest)
+    },
     async setApprove() {
       await ERC20API.setApproveLiqudityPool(
         ethToWei(this.amount),
@@ -159,6 +191,7 @@ export default {
       this.getPoolBalance();
       this.getAllowance();
       this.getPoolStats();
+      this.getMaxInvest();
     },
     changeAddWithdraw() {
       // console.log(this.addWithdrawSelected);
@@ -229,6 +262,7 @@ export default {
         this.getProtocolFee();
         this.getPoolStats();
         this.getAllowance();
+        this.getMaxInvest();
         this.updateButtonVariant();
       });
     }
@@ -242,6 +276,7 @@ export default {
         this.getProtocolFee();
         this.getPoolStats();
         this.getAllowance();
+        this.getMaxInvest();
         this.updateButtonVariant();
       });
     });
@@ -379,15 +414,15 @@ export default {
                 </b-col>
               </b-row>
               <b-row
-                v-if="userWeb3Connected && (amount == 0 || userBalance == 0)"
+                v-if="! validInput"
               >
                 <b-col md="12">
                   <b-button block variant="secondary">
-                    {{ amount == 0 ? "Enter Amount" : "No balance" }}
+                    {{ invalidInputMessage }}
                   </b-button>
                 </b-col>
               </b-row>
-              <b-row v-if="userWeb3Connected && amount > 0 && userBalance > 0">
+              <b-row v-if="validInput">
                 <b-col md="6" class="d-flex justify-content-center">
                   <b-button block :variant="approveVariant" @click="setApprove"
                     >Approve
