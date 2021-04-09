@@ -57,19 +57,19 @@ export default {
       }
       case "137": {
         //Matic/Polygon Smart Chain Mainnet
-        store.addresses = Addresses.maticMainnet;
+        store.addresses = Addresses.polygonMainnet;
         store.networkNotSupported = true;
         store.networkNotMainnet = false;
         break;
       }
       case "80001": {
         //Matic/Polygon Smart Chain Testnet
-        store.addresses = Addresses.maticTestnet;
+        store.addresses = Addresses.polygonTestnet;
         store.networkNotSupported = false;
         store.networkNotMainnet = true;
         break;
       }      
-      //maticTestnet
+      //polygonTestnet
       default: {
         //network not supported
         store.networkNotSupported = true;
