@@ -17,9 +17,8 @@ export default {
   components: {},
   data() {
     return {
-      selectedToken: null,
       selectedPoolId: "0",
-      selectedPoolSymbol: "XXX",
+      selectedPoolSymbol: "",
       userWeb3Connected: false,
       allowance: 0,
       amount: "0",
@@ -69,8 +68,7 @@ export default {
             if (ethToWei(this.amount).toString() > this.maxInvest)
                return false;
             else
-              return true;
-            
+              return true;            
           }
           else {
             return false;
@@ -88,7 +86,7 @@ export default {
            if(ethToWei(+this.amount).toString()>this.maxInvest)
             return "Investor limit reached"; 
         }
-    }    
+    },    
   },
   methods: {
     async getProtocolFee() {
@@ -252,7 +250,7 @@ export default {
     },
   },
   mounted() {
-
+    
     this.userWeb3Connected = store.userWeb3Connected;
     if (store.userWeb3Connected){
       store.setSelectedPoolId(this.selectedPoolId).then( () => { 
@@ -323,6 +321,15 @@ export default {
 .poolInfo {
   font-size: 10px;
 }
+.apy {
+  font-size: 40px;
+  text-align:center;
+  background-color: antiquewhite;
+}
+.apyText {
+  font-size: 10px;
+  background-color: antiquewhite;
+}
 </style>
 
 <template>
@@ -350,7 +357,16 @@ export default {
             </b-row>
             <div v-if="addWithdrawSelected == 'add'">
               <b-row>
-                Deposit
+                Deposit {{ selectedPoolSymbol }} and earn
+              </b-row>
+              <b-row class="apy justify-content-center mt-1">
+                5.05%
+              </b-row>
+              <b-row class="apyText justify-content-center">
+                Variable APY
+              </b-row>
+              <b-row class="mt-3">
+                Deposit Amount
               </b-row>
               <b-row>
                 <b-col cols="2"> </b-col>
@@ -413,9 +429,7 @@ export default {
                   </b-button>
                 </b-col>
               </b-row>
-              <b-row
-                v-if="! validInput"
-              >
+              <b-row v-if="userWeb3Connected && ! validInput">
                 <b-col md="12">
                   <b-button block variant="secondary">
                     {{ invalidInputMessage }}
@@ -426,7 +440,7 @@ export default {
                 <b-col md="6" class="d-flex justify-content-center">
                   <b-button block :variant="approveVariant" @click="setApprove"
                     >Approve
-                    {{ this.tokenPoolList[this.selectedPoolId].text }}</b-button
+                    {{ selectedPoolSymbol }}</b-button
                   >
                 </b-col>
                 <b-col md="6" class="d-flex justify-content-center">
@@ -534,7 +548,7 @@ export default {
                     :variant="approveVariant"
                     @click="setApproveWriterPool"
                     >Approve
-                    {{ this.tokenPoolList[this.selectedPoolId].text }}</b-button
+                    {{ selectedPoolSymbol }}</b-button
                   >
                 </b-col>
                 <b-col md="6" class="d-flex justify-content-center">

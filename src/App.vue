@@ -68,8 +68,14 @@ export default {
         store.networkNotSupported = false;
         store.networkNotMainnet = true;
         break;
+      }   
+     case "1287": {
+        //Moonbeam Testnet
+        store.addresses = Addresses.moonbeamTestnet;
+        store.networkNotSupported = false;
+        store.networkNotMainnet = true;
+        break;
       }      
-      //polygonTestnet
       default: {
         //network not supported
         store.networkNotSupported = true;
