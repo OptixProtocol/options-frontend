@@ -224,7 +224,7 @@ export default {
     async getLatestPrice() {
       this.latestPrice = await ERC20OptionsAPI.getLatestPrice();
       this.tokenSymbols = await LiquidityPoolAPI.getMarketList();
-
+      console.log("latestPrice:",this.latestPrice);
       let pair2 = this.tokenSymbols[this.selectedMarketId].pair2;
       let sp = 0;
       switch (pair2) {
@@ -235,6 +235,10 @@ export default {
         case "Gwei":
           sp = gweiToEth(this.latestPrice);
           this.money = this.moneyGwei;
+          break;
+        default:
+          sp = gweiToCents(this.latestPrice);
+          this.money = this.moneyUSD;
           break;
       }
       this.strikePrice = sp.toString();
