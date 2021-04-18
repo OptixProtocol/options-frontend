@@ -19,66 +19,59 @@ export default {
     const ETH_NETWORK = process.env.VUE_APP_ETH_NETWORK;
     const netVersion = window.ethereum.networkVersion;
 
+console.log("netVersion:",netVersion)
     switch (netVersion) {
       case "5777": {
         //dev
         store.addresses = Addresses.development;
-        store.networkNotSupported = false;
-        store.networkNotMainnet = true;
+        store.networkIsSupported = true;
         break;
       }
       case "4": {
         //rinkeby
         store.addresses = Addresses.rinkeby;
-        store.networkNotSupported = false;
-        store.networkNotMainnet = true;
+        store.networkIsSupported = true;
         break;
       }
       case "1": {
         //mainnet
         store.addresses = Addresses.mainnet;
-        store.networkNotSupported = true;
-        store.networkNotMainnet = false;
+        store.networkIsSupported = false;
         break;
       }
       case "56": {
         //Binance Smart Chain Mainnet
         store.addresses = Addresses.binanceMainnet;
-        store.networkNotSupported = true;
-        store.networkNotMainnet = false;
+        store.networkIsSupported = false;
         break;
       }
       case "97": {
         //Binance Smart Chain Testnet
         store.addresses = Addresses.binanceTestnet;
-        store.networkNotSupported = false;
-        store.networkNotMainnet = true;
+        store.networkIsSupported = true;
         break;
       }
       case "137": {
         //Matic/Polygon Smart Chain Mainnet
         store.addresses = Addresses.polygonMainnet;
-        store.networkNotSupported = true;
-        store.networkNotMainnet = false;
+        store.networkIsSupported = true;
         break;
       }
       case "80001": {
         //Matic/Polygon Smart Chain Testnet
         store.addresses = Addresses.polygonTestnet;
-        store.networkNotSupported = false;
-        store.networkNotMainnet = true;
+        store.networkIsSupported = true;
         break;
       }   
      case "1287": {
         //Moonbeam Testnet
         store.addresses = Addresses.moonbeamTestnet;
-        store.networkNotSupported = false;
-        store.networkNotMainnet = true;
+        store.networkIsSupported = true;
         break;
       }      
       default: {
         //network not supported
-        store.networkNotSupported = true;
+        store.networkIsSupported = false;
       }
     }
 

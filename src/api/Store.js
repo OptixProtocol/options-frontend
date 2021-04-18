@@ -41,8 +41,8 @@ export const store = {
     selectedTokenContract: null,
     selectedTokenContractAddress: null,
 
-    networkNotSupported: true,
-    networkNotMainnet: true
+    networkIsSupported: false,
+    networkIsMainnet: false
   },
 
  

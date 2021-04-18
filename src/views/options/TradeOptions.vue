@@ -129,6 +129,12 @@ export default {
       get() {
         if (this.sentiment == "long") {
           //strikePrice + (totalUSD/optionSize)
+          // console.log("this.strikePrice:",this.strikePrice);
+          // console.log("this.displayTotalUSD:",this.displayTotalUSD);
+          // console.log("this.optionSize:",this.optionSize);
+
+
+
           return (
             this.strikePrice  +
             this.displayTotalUSD / this.optionSize
@@ -195,6 +201,8 @@ export default {
     },
     displayApproveVariant: {
       get(){
+        // console.log("allowance:", this.allowance);
+        // console.log("totalPremium:", this.totalPremium);        
         if (this.allowance >= this.totalPremium) {
          return "secondary";
         } else {
@@ -224,7 +232,7 @@ export default {
     async getLatestPrice() {
       this.latestPrice = await ERC20OptionsAPI.getLatestPrice();
       this.tokenSymbols = await LiquidityPoolAPI.getMarketList();
-      console.log("latestPrice:",this.latestPrice);
+      // console.log("latestPrice:",this.latestPrice);
       let pair2 = this.tokenSymbols[this.selectedMarketId].pair2;
       let sp = 0;
       switch (pair2) {

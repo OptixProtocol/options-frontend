@@ -100,13 +100,13 @@ var ERC20OptionsAPI = {
     },
    
     async setBuy(period, optionSize, strikePrice, optionType) {
-        console.log("<<Buy>>")
-        console.log("period:" +period);
-        console.log("optionSize:" +optionSize);
-        console.log("strikePrice:" +strikePrice);
-        console.log("optionType:" +optionType);
-        console.log("optionMarketId:" + store.selectedMarketId);
-        console.log("store.userAccount:" + store.userAccount);
+        // console.log("<<Buy>>")
+        // console.log("period:" +period);
+        // console.log("optionSize:" +optionSize);
+        // console.log("strikePrice:" +strikePrice);
+        // console.log("optionType:" +optionType);
+        // console.log("optionMarketId:" + store.selectedMarketId);
+        // console.log("store.userAccount:" + store.userAccount);
 
         let contract = new store.userWeb3.eth.Contract(
             store.abis.ERC20Options,

@@ -72,9 +72,9 @@ var ERC20API = {
   },
 
   async setApproveERC20Options(amount) {
-    console.log("approve amt:", amount.toString());
-    console.log("approve address:", store.addresses.ERC20Options);
-    console.log("approve store.userAccount:", store.userAccount);
+    // console.log("approve amt:", amount.toString());
+    // console.log("approve address:", store.addresses.ERC20Options);
+    // console.log("approve store.userAccount:", store.userAccount);
     
     await store.getSelectedTokenContract().methods
       .approve(store.addresses.ERC20Options, amount).send({ from: store.userAccount })

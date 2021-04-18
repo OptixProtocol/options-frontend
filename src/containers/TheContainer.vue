@@ -11,13 +11,19 @@
             </transition>
           </CContainer>
         </main>
-         <b-modal id="modal-center" centered title="Network not supported" v-model="show"  ok-only>
+         <b-modal id="modal-center" centered title="Network not supported" v-model="networkIsNotSupported"  ok-only>
             <p class="my-4">
             This network currently isn't supported. Please change to a supported network and refresh the page.<br><br>
-            Testnets supported are: Rinkeby, Binance Smart Chain<br>
-            Mainnets supported are: There are currently no mainnets supported
+            Mainnets: Polygon<br><br>
+            Testnets: Rinkeby, Binance Smart Chain, Polygon, Moonbeam<br>
             </p>
         </b-modal>
+         <b-modal id="modal-center" centered title="Warning" v-model="networkIsSupported"  ok-only ok-title="I understand" >
+            <p class="my-4">
+            Optyn is a unaudited beta smart contract software. <br>Only use funds that you can afford to lose.<br><br>
+            </p>
+        </b-modal>
+
       </div>
       <TheFooter/>
     </CWrapper>
@@ -34,7 +40,8 @@ export default {
   name: 'TheContainer',
   data() {
       return {
-        show: false,
+        networkIsSupported: false,
+        networkIsNotSupported: false,
       }
   },
   components: {
@@ -43,9 +50,14 @@ export default {
     TheFooter
   },
    mounted() {
-    //  console.log("networkNotSupported:",store.networkNotSupported)
-     if (store.networkNotSupported){
-       this.show = true;
+     console.log("networkIsSupported:",store.networkIsSupported);
+     if (store.networkIsSupported){
+       this.networkIsSupported = true;
+       this.networkIsNotSupported = false;
+     }
+     else{
+       this.networkIsSupported = false;
+       this.networkIsNotSupported = true;
      }
    }
 }

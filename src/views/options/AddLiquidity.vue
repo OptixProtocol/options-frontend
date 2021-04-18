@@ -9,7 +9,7 @@ import ERC20OptionsAPI from "../../api/ERC20Options";
 const toBN = Web3.utils.toBN;
 const gweiToEth = (x) => toBN(x).div(toBN(1e9));
 const ethToGwei = (x) => toBN(x).mul(toBN(1e9));
-const ethToWei = (x) => toBN(1e18 * x);
+const ethToWei = (x) => Web3.utils.toWei(x.toString(), 'ether')
 const gweiToWei = (x) => toBN(x).mul(toBN(1e9));
 
 export default {
@@ -63,12 +63,15 @@ export default {
     validInput: {
         get() {
           if(this.userWeb3Connected && this.amount > 0 && this.userBalance > 0){
-            // console.log("maxInvest:",this.maxInvest)
-            // console.log("ethToWei(this.amount):",ethToWei(+this.amount).toString())
-            if (ethToWei(this.amount).toString() > this.maxInvest)
-               return false;
-            else
+
+            let weiAmt = ethToWei(this.amount);
+            let weiMaxInvest = this.maxInvest;
+            if (toBN(weiAmt).gt(toBN(weiMaxInvest))){              
+              return false;
+            }
+            else{
               return true;            
+            }
           }
           else {
             return false;
@@ -83,7 +86,10 @@ export default {
            if(this.userBalance == 0)
             return "No balance";
 
-           if(ethToWei(+this.amount).toString()>this.maxInvest)
+          // console.log("ethToWei(+this.amount).toString():",ethToWei(+this.amount).toString())
+          // console.log("this.maxInvest:",this.maxInvest)
+
+           if(ethToWei(this.amount)>this.maxInvest)
             return "Investor limit reached"; 
         }
     },    
@@ -102,7 +108,7 @@ export default {
       this.allowance = await ERC20API.getAllowanceLiqudityPool(
         store.userAccount
       );
-      console.log("allowance:", this.allowance);
+      // console.log("allowance:", this.allowance);
     },
     async getTokenPoolList() {
       this.tokenPoolList = await LiquidityPoolAPI.getTokenPoolList();
@@ -112,7 +118,7 @@ export default {
     getApproved() {},
     async getMaxInvest() {
       this.maxInvest = await LiquidityPoolAPI.getMaxInvest();
-      console.log("maxxxInvest:",this.maxInvest)
+      // console.log("maxxxInvest:",this.maxInvest)
     },
     async setApprove() {
       await ERC20API.setApproveLiqudityPool(
@@ -148,8 +154,8 @@ export default {
 
         this.lastProvideTimestamp = await LiquidityPoolAPI.getLastProvideTimestamp();
 
-        console.log("lastProvideTimestamp:", this.lastProvideTimestamp);
-        console.log("lockupPeriod:", this.lockupPeriod);
+        // console.log("lastProvideTimestamp:", this.lastProvideTimestamp);
+        // console.log("lockupPeriod:", this.lockupPeriod);
 
         var d = new Date((+this.lastProvideTimestamp + +this.lockupPeriod) * 1000);
         this.lockedUntil = d.toLocaleString();
@@ -161,8 +167,8 @@ export default {
       this.totalBalance = totalBalance;
       this.availableBalance = availableBalance;
       
-      console.log("shareOf:",this.shareOf);
-      console.log("totalBalance:",this.totalBalance);
+      // console.log("shareOf:",this.shareOf);
+      // console.log("totalBalance:",this.totalBalance);
 
       this.poolSharePercent = (this.shareOf / this.totalBalance) * 100;
       if(isNaN(this.poolSharePercent)){
@@ -202,8 +208,9 @@ export default {
           return;
         }
 
-        console.log("amount:", this.amount);
-        if (this.allowance >= ethToWei(this.amount)) {
+        // console.log("allowance:", this.allowance);
+        // console.log("amount:", ethToWei(this.amount));
+        if (+this.allowance >= ethToWei(this.amount)) {
           this.approveVariant = "secondary";
           this.provideVariant = "success";
         } else {
@@ -360,7 +367,7 @@ export default {
                 Deposit {{ selectedPoolSymbol }} and earn
               </b-row>
               <b-row class="apy justify-content-center mt-1">
-                5.05%
+                TBD%
               </b-row>
               <b-row class="apyText justify-content-center">
                 Variable APY
@@ -452,7 +459,8 @@ export default {
 
               <b-row>
                 <hr />
-                ⭐️ By adding liquidity you'll earn the fees of all options
+                ⭐️ TBD% - The protocol has just launched. As soon as we have an APY calculation it will display here
+                <br />⭐️ By adding liquidity you'll earn the fees of all options
                 traded (less the protocol fee of {{ this.protocolFee / 100 }}%)
                 where this pool is used for collateral, proportional to your
                 share of the pool <Br /> ⭐️ Fees are added added to the pool,

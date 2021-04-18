@@ -33,6 +33,7 @@ export default {
       tableItemsActive: [],
       tableItemsExpired: [],
       item: null,
+      showSpinner: false,
       tableFields: [
         { key: "type" },
         { key: "market" },
@@ -51,6 +52,7 @@ export default {
   methods: {
     async getMyOptions() {
       
+      this.showSpinner = true;
       let tableItems = await ERC20OptionsAPI.getMyOptions();
       await LiquidityPoolAPI.getMarketList();
 
@@ -70,6 +72,7 @@ export default {
       } else {
         this.tableItems = this.tableItemsExpired;
       }
+      this.showSpinner = false;
     },
     async getLatestPrice() {
       this.latestPrice = await ERC20OptionsAPI.getLatestPrice();
@@ -151,12 +154,12 @@ export default {
       let profit = 0
       if (item.optionType == ERC20OptionsAPI.OptionType.Call) {
         profit = ((((+latestPrice - +strike)*+size)/+strike)-+prem).toFixed(2);
-        console.log("call profit:",profit);
+        // console.log("call profit:",profit);
       }
       else{
         profit = ((((+strike - +latestPrice)*+size)/+strike)-+prem).toFixed(2);
         // profit = (strike - latestPrice);
-        console.log("put profit:",profit);
+        // console.log("put profit:",profit);
       }
       return profit;
 
@@ -233,7 +236,11 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.spinner {
+  margin: 0 0 4px 5px;
+}
+</style>
 <template>
   <CCard>
     <CCardHeader>
@@ -259,6 +266,7 @@ export default {
             :height="toggleHeight"
             @change="changeToggle"
           />
+          <b-spinner small label="Small Spinner" class="spinner" v-if="showSpinner"></b-spinner>
         </b-col>
       </b-row>
       <CDataTable
