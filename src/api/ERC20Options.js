@@ -2,6 +2,7 @@ import Web3 from "web3";
 import { store } from "../api/Store";
 import LiquidityPoolAPI from "../api/LiquidityPool";
 import { EventBus } from "../api/EventBus";
+import axios from 'axios';
 
 var ERC20OptionsAPI = {
     OptionType: { Invalid:0, Put:1, Call:2 },
@@ -53,6 +54,66 @@ var ERC20OptionsAPI = {
             .call();
     },
    
+    async getMyOptionsGraphQL() {
+    if (store.userAccount == null) {
+        return [];
+    }
+
+    const res = await axios.post(
+        'https://api.thegraph.com/subgraphs/name/dannydoritoeth/optyn', {
+        query: `        
+        {
+            options(where: { holder : "{{holder}}"}) {
+            id
+            creationBlock
+            creationTimestamp
+            holder 
+            }
+        }
+        `.replace("{{holder}}",store.userAccount.toLowerCase())
+        })
+        console.log(res.data.data.options);
+
+// creationBlock: "13566851"
+// creationTimestamp: "1619045395"
+// holder: "0xd445d873d0edc0cd35ff4f61b334df8b7b822b1b"
+// id: "5"
+
+
+        let options = [];
+        let lastFoundID = -1;
+        let lastFoundOption = null;
+        await Promise.all(
+            res.data.data.options
+                .map((x) => x.id)
+                .map((id) =>
+                    store.contracts.ERC20Options.methods
+                        .options(id)
+                        .call()
+                        .then((x) => {
+                            const option = { ...x, id };
+                            if (!res.data.data.options.includes(id)) {
+                                option.log = res.data.data.options[id];
+                                options.push(option);
+                            } else
+                                options.filter((x) => x.id == id)[0].state = x.state;
+                            if (
+                                id > lastFoundID &&
+                                x.state == 1 &&
+                                Date.now() < x.expiration * 1000
+                            ) {
+                                lastFoundOption = option;
+                                lastFoundID = id;
+                            }
+                        })
+                )
+        );        
+        options.sort((x, y) => y.id - x.id);
+        store.myOptions = options;
+
+        return options;
+    },
+
     async getMyOptions() {
         
         if (store.userAccount == null) {
