@@ -53,7 +53,6 @@ export default {
     async getMyOptions() {
       
       this.showSpinner = true;
-      let tableItems = await ERC20OptionsAPI.getMyOptions();
       let tableItems = await ERC20OptionsAPI.getMyOptionsGraphQL();
       await LiquidityPoolAPI.getMarketList();
 
