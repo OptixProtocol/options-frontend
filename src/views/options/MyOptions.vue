@@ -25,9 +25,14 @@ const centsToGwei = (x) => x * 1e9;
 export default {
   data() {
     return {
+      selected: 'active',
+      options: [
+          { text: 'Active', value: 'active' },
+          { text: 'Expired/Exercised', value: 'inactive' }
+      ],      
       showActive: true,
       toggleFontSize: 16,
-      toggleWidth: 100,
+      toggleWidth: 180,
       toggleHeight: 30,
       tableItems: [],
       tableItemsActive: [],
@@ -60,10 +65,10 @@ export default {
       // now.setDate(now.getDate() + 28 * 3);
 
       this.tableItemsActive = tableItems.filter(
-        (x) => new Date(x.expiration * 1000) >= now
+        (x) => (new Date(x.expiration * 1000) >= now) && (x.state != ERC20OptionsAPI.OptionState.Exercised)
       );
       this.tableItemsExpired = tableItems.filter(
-        (x) => new Date(x.expiration * 1000) < now
+        (x) => (new Date(x.expiration * 1000) < now) || (x.state == ERC20OptionsAPI.OptionState.Exercised)
       );
       console.log("tableItems:", tableItems);
 
@@ -74,14 +79,16 @@ export default {
       }
       this.showSpinner = false;
     },
+
     async getLatestPrice() {
       this.latestPrice = await ERC20OptionsAPI.getLatestPrice();
     },
     changeToggle(action) {
-      this.showActive = action.value;
-      if (this.showActive) {
+      if (action == "active") {
+        this.showActive = true;        
         this.tableItems = this.tableItemsActive;
       } else {
+        this.showActive = false;
         this.tableItems = this.tableItemsExpired;
       }
     },
@@ -144,24 +151,26 @@ export default {
       // console.log("item.strike:", oracleToCents(item.strike)); 
       // console.log("item.premium:", item.premium/1e18); 
 
+      if (this.showActive){
+ 
+        let latestPrice = oracleToCents(store.marketList[item.marketId].latestPrice)/10;
+        let size = +item.optionSize/1e9;
+        let strike = oracleToCents(item.strike);
+        let prem = item.premium/1e18;
 
-//call
-      let latestPrice = oracleToCents(store.marketList[item.marketId].latestPrice)/10;
-      let size = +item.optionSize/1e9;
-      let strike = oracleToCents(item.strike);
-      let prem = item.premium/1e18;
-
-      let profit = 0
-      if (item.optionType == ERC20OptionsAPI.OptionType.Call) {
-        profit = ((((+latestPrice - +strike)*+size)/+strike)-+prem).toFixed(2);
-        // console.log("call profit:",profit);
+        let profit = 0
+        if (item.optionType == ERC20OptionsAPI.OptionType.Call) {
+          profit = ((((+latestPrice - +strike)*+size)/+strike)-+prem).toFixed(2);
+          // console.log("call profit:",profit);
+        }
+        else{
+          profit = ((((+strike - +latestPrice)*+size)/+strike)-+prem).toFixed(2);
+          // profit = (strike - latestPrice);
+          // console.log("put profit:",profit);
+        }
+        return "$" + profit;
       }
-      else{
-        profit = ((((+strike - +latestPrice)*+size)/+strike)-+prem).toFixed(2);
-        // profit = (strike - latestPrice);
-        // console.log("put profit:",profit);
-      }
-      return profit;
+      
 
 
       // this.getBreakeven(item);
@@ -249,24 +258,29 @@ export default {
     <CCardBody>
       <b-row>
         <b-col cols="12">
-          <toggle-button
-            id="toggle"
-            :value="showActive"
-            :labels="{
-              checked: 'Active',
-              unchecked: 'Expired',
-            }"
-            :color="{
-              checked: '#007bff',
-              unchecked: '#007bff',
-              disabled: '#CCCCCC',
-            }"
-            :font-size="toggleFontSize"
-            :width="toggleWidth"
-            :height="toggleHeight"
-            @change="changeToggle"
-          />
-          <b-spinner small label="Small Spinner" class="spinner" v-if="showSpinner"></b-spinner>
+
+          <b-form-group
+              id="input-group-2"
+            >
+              <b-input-group>
+                <b-col cols="12"  >
+                <b-form-group>
+                  <b-form-radio-group
+                    id="activeRadio"
+                    v-model="selected"
+                    :options="options"        
+                    button-variant="outline-primary"
+                    
+                    name="radio-btn-outline"
+                    buttons
+                    @change="changeToggle"
+                  ></b-form-radio-group>
+                </b-form-group>
+ 
+                </b-col>
+              </b-input-group>
+            </b-form-group>
+            <b-spinner small label="Small Spinner" class="spinner" v-if="showSpinner"></b-spinner>
         </b-col>
       </b-row>
       <CDataTable
@@ -313,8 +327,8 @@ export default {
           <div>${{ getBreakeven(item) }}</div>
         </td> -->
 
-        <td slot="profitLoss" class="text-center" slot-scope="{ item }">
-          <div>${{ getProfitLoss(item) }}</div>
+        <td slot="profitLoss" class="text-center" slot-scope="{ item }" >
+          <div>{{ getProfitLoss(item) }}</div>
         </td>
 
         <!-- <td slot="placedAt" class="text-center" slot-scope="{ item }">
