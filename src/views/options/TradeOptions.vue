@@ -34,7 +34,7 @@ export default {
           { text: 'Long(Call)', value: 'call' }
       ],
       tokenSymbols: [],
-      latestPrice: 0,
+      latestPrice: 0,      
       strikePrice: 0,
       userBalance: 0,
       allowance: 0,
@@ -166,6 +166,16 @@ export default {
         );
       },
     },
+    displayLatestPrice: {
+      get() {
+        return (
+          this.money.prefix +
+          (gweiToCents(this.latestPrice)/100).toFixed(2) +
+          " " +
+          this.money.suffix
+        );
+      },
+    },    
     displayUserBalance: {
       get() {
         return (this.userBalance / 1e18).toFixed(5);
@@ -565,6 +575,7 @@ export default {
                 {{ displayValue }}
               </b-col>
             </b-row>
+            
             <b-form-group
               id="input-group-2"
               label="Strike Price"
@@ -578,11 +589,17 @@ export default {
                 @change.native="changeStrikePrice"
               ></money>
             </b-form-group>
+        <b-row>
+              <b-col class="text-left value">
+                Current Price:
+                {{ displayLatestPrice }}
+              </b-col>
+            </b-row>            
             <b-form-group
               id="input-group-2"
               label="Period of Holding"
               label-for="input-2"
-              class="form_title "
+              class="form_title mt-3"
             >
               <b-form-select
                 id="periodOfHolding"
