@@ -25,7 +25,7 @@ export default {
     MyOptions,
   },
   created() {
-    this.interval = setInterval(() => this.getUserBalance(), 15000);
+    this.interval = setInterval(() => this.getInterval(), 15000);
   },
   data() {
     return {
@@ -242,6 +242,10 @@ export default {
 
   },
   methods: {
+    async getInterval() {
+      this.getUserBalance();
+      this.latestPrice = await ERC20OptionsAPI.getLatestPrice();
+    },    
     async getAllowance() {
       this.allowance = await ERC20API.getAllowanceERC20Options();
       this.updateFormIsValid();
