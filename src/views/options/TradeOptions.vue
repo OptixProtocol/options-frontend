@@ -23,6 +23,9 @@ export default {
     Money,
     MyOptions,
   },
+  created() {
+    this.interval = setInterval(() => this.getUserBalance(), 15000);
+  },
   data() {
     return {
       selected: 'put',

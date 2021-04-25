@@ -15,6 +15,9 @@ const gweiToWei = (x) => toBN(x).mul(toBN(1e9));
 export default {
   name: "AddLiquidity",
   components: {},
+  created() {
+    this.interval = setInterval(() => this.getUserBalance(), 15000);
+  },  
   data() {
     return {
       selectedPoolId: "0",
