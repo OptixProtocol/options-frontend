@@ -16,6 +16,7 @@ const centsToGwei = (x) => x * 1e9;
 const gweiToWei = (x) => toBN(x).mul(toBN(1e9));
 const gweiToEth = (x) => toBN(x).div(toBN(1e7));
 // const weiToEth = (x) => toBN(x).mul(toBN(1e9));
+const weiToEth = (x) => Web3.utils.fromWei(x.toString(), 'nano')
 
 export default {
   name: "TradeOptions",
@@ -167,10 +168,11 @@ export default {
       },
     },
     displayLatestPrice: {
-      get() {
+      get() {          
         return (
           this.money.prefix +
-          (gweiToCents(this.latestPrice)/100).toFixed(2) +
+          // (gweiToCents(this.latestPrice)/100).toFixed(4) +
+          weiToEth(this.latestPrice)+
           " " +
           this.money.suffix
         );
@@ -364,11 +366,11 @@ export default {
       let _optionSize = this.getOptionSize();
       let _strikePrice = (centsToGwei(this.getStrikePrice())/10).toFixed(0);
       let _optionType = this.getOptionType();
-      console.log("_period:", _period.toString());
-      console.log("_optionSize:", _optionSize.toString());
-      console.log("_strikePrice:", _strikePrice.toString());
-      console.log("_optionType:", _optionType.toString());
-      console.log("_latestPrice:", this.latestPrice);
+      // console.log("_period:", _period.toString());
+      // console.log("_optionSize:", _optionSize.toString());
+      // console.log("_strikePrice:", _strikePrice.toString());
+      // console.log("_optionType:", _optionType.toString());
+      // console.log("_latestPrice:", this.latestPrice);
       let fees = await ERC20OptionsAPI.getFees(
         _period,
         _optionSize,
@@ -576,11 +578,18 @@ export default {
               </b-col>
             </b-row>
             
+           <b-row class="mt-3">
+              <b-col cols="4">Strike Price</b-col>
+              <b-col cols="8" class="text-right balance">
+                Current Price:
+                {{ displayLatestPrice }}
+              </b-col>
+            </b-row>
+
             <b-form-group
-              id="input-group-2"
-              label="Strike Price"
+              id="input-group-2"              
               label-for="input-2"
-              class="mt-3"
+              
             >
               <money
                 block
@@ -589,12 +598,6 @@ export default {
                 @change.native="changeStrikePrice"
               ></money>
             </b-form-group>
-        <b-row>
-              <b-col class="text-left value">
-                Current Price:
-                {{ displayLatestPrice }}
-              </b-col>
-            </b-row>            
             <b-form-group
               id="input-group-2"
               label="Period of Holding"
