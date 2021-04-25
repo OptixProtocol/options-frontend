@@ -25,6 +25,11 @@ export default {
   },
   data() {
     return {
+      selected: 'put',
+      options: [
+          { text: 'Short(Put)', value: 'put' },
+          { text: 'Long(Call)', value: 'call' }
+      ],
       tokenSymbols: [],
       latestPrice: 0,
       strikePrice: 0,
@@ -32,7 +37,7 @@ export default {
       allowance: 0,
       optionSize: 1,
       // optionValue: 1000,
-      sentiment: "short",
+      optionType: "short",
       money: {
         decimal: ".",
         thousands: ",",
@@ -127,7 +132,7 @@ export default {
 
     displayBreakeven: {
       get() {
-        if (this.sentiment == "long") {
+        if (this.optionType == "call") {
           //strikePrice + (totalUSD/optionSize)
           // console.log("this.strikePrice:",this.strikePrice);
           // console.log("this.displayTotalUSD:",this.displayTotalUSD);
@@ -255,13 +260,12 @@ export default {
       store.connectUser();
     },
     changeOptionType(action) {
-      if (action.value) {
-        this.sentiment = "short";
-      } else {
-        this.sentiment = "long";
-      }
-      this.getFees();
-      this.updateFormIsValid();
+      console.log("changeOptionType:",action);
+      if (action) {
+        this.optionType = action;
+        this.getFees();
+        this.updateFormIsValid();
+      } 
     },
     changeOptionSize() {
       
@@ -301,7 +305,7 @@ export default {
       return this.strikePrice;
     },
     getOptionType() {
-      return this.sentiment == "long"
+      return this.optionType == "call"
         ? ERC20OptionsAPI.OptionType.Call
         : ERC20OptionsAPI.OptionType.Put;
     },
@@ -347,11 +351,11 @@ export default {
       let _optionSize = this.getOptionSize();
       let _strikePrice = (centsToGwei(this.getStrikePrice())/10).toFixed(0);
       let _optionType = this.getOptionType();
-      // console.log("_period:", _period.toString());
-      // console.log("_optionSize:", _optionSize.toString());
-      // console.log("_strikePrice:", _strikePrice.toString());
-      // console.log("_optionType:", _optionType.toString());
-      // console.log("_latestPrice:", this.latestPrice);
+      console.log("_period:", _period.toString());
+      console.log("_optionSize:", _optionSize.toString());
+      console.log("_strikePrice:", _strikePrice.toString());
+      console.log("_optionType:", _optionType.toString());
+      console.log("_latestPrice:", this.latestPrice);
       let fees = await ERC20OptionsAPI.getFees(
         _period,
         _optionSize,
@@ -479,6 +483,10 @@ export default {
 .fees {
   font-size: 10px;
 }
+
+#optionTypeRadio{
+  margin-left: -15px;
+}
 </style>
 
 <template>
@@ -490,7 +498,7 @@ export default {
         class="mb-2 rounded-card mx-auto"
       >
         <template #header class="mx-auto">
-          <h6 class="mb-0 text-center card_title">Trade Options</h6>
+          <h6 class="mb-0 text-center card_title">Buy Options</h6>
         </template>
         <b-card-body>
           <b-card-text>
@@ -500,24 +508,20 @@ export default {
               label-for="input-2"
             >
               <b-input-group>
-                <b-col cols="6">
-                  <toggle-button
-                    id="toggleSentiment"
-                    :value="true"
-                    :labels="{
-                      checked: 'Short (Put)',
-                      unchecked: 'Long (Call)',
-                    }"
-                    :color="{
-                      checked: '#007bff',
-                      unchecked: '#007bff',
-                      disabled: '#CCCCCC',
-                    }"
-                    :font-size="toggleFontSize"
-                    :width="toggleWidth"
-                    :height="toggleHeight"
+                <b-col cols="12"  >
+                <b-form-group>
+                  <b-form-radio-group
+                    id="optionTypeRadio"
+                    v-model="selected"
+                    :options="options"        
+                    button-variant="outline-primary"
+                    
+                    name="radio-btn-outline"
+                    buttons
                     @change="changeOptionType"
-                  />
+                  ></b-form-radio-group>
+                </b-form-group>
+ 
                 </b-col>
               </b-input-group>
             </b-form-group>
