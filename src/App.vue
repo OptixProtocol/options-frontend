@@ -5,6 +5,7 @@
 <script>
 import { store } from "./api/Store";
 import Addresses from "./static/Addresses.json";
+import Exclude from "./static/Exclude.json";
 import ChainLinkAggregator from "./static/ChainLinkAggregator.json";
 import ERC20ABI from "./static/ERC20ABI.json";
 import ERC20LiquidityPool from "./static/ERC20LiquidityPool.json";
@@ -24,48 +25,56 @@ console.log("netVersion:",netVersion)
       case "5777": {
         //dev
         store.addresses = Addresses.development;
+        store.exclude = Exclude.development;
         store.networkIsSupported = true;
         break;
       }
       case "4": {
         //rinkeby
         store.addresses = Addresses.rinkeby;
+        store.exclude = Exclude.rinkeby;
         store.networkIsSupported = true;
         break;
       }
       case "1": {
         //mainnet
         store.addresses = Addresses.mainnet;
+        store.exclude = Exclude.mainnet;
         store.networkIsSupported = false;
         break;
       }
       case "56": {
         //Binance Smart Chain Mainnet
         store.addresses = Addresses.binanceMainnet;
+        store.exclude = Exclude.binanceMainnet;
         store.networkIsSupported = false;
         break;
       }
       case "97": {
         //Binance Smart Chain Testnet
         store.addresses = Addresses.binanceTestnet;
+        store.exclude = Exclude.binanceTestnet;
         store.networkIsSupported = true;
         break;
       }
       case "137": {
         //Matic/Polygon Smart Chain Mainnet
         store.addresses = Addresses.polygonMainnet;
+        store.exclude = Exclude.polygonMainnet;
         store.networkIsSupported = true;
         break;
       }
       case "80001": {
         //Matic/Polygon Smart Chain Testnet
-        store.addresses = Addresses.polygonTestnet;
+        store.addresses = Addresses.polygonMainnet;
+        store.exclude = Exclude.polygonMainnet;
         store.networkIsSupported = true;
         break;
       }   
      case "1287": {
         //Moonbeam Testnet
         store.addresses = Addresses.moonbeamTestnet;
+        store.exclude = Exclude.moonbeamTestnet;
         store.networkIsSupported = true;
         break;
       }      

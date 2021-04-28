@@ -27,14 +27,18 @@ export const store = {
     contracts: null,    
     addresses: null,
     abis: null,
+    
 
     liquidityPool: [],
     selectedMarketId: 10,
     selectedPoolId: 0,
 
     marketList: null,
+    marketHash: null,
     tokenPoolList: null,
+    tokenPoolHash: null,
     tokenPoolContracts: null,
+    exclude: null,
 
 
     myOptions: null,
@@ -121,7 +125,9 @@ export const store = {
 
       //reload them with the users web3, not infura
       store.tokenPoolList = null;
+      store.tokenPoolHash = null;
       store.marketList = null;
+      store.marketHash = null;
 
       // await LiquidityPoolAPI.getTokenPoolList();
       // await LiquidityPoolAPI.getMarketList();

@@ -1,0 +1,42 @@
+{
+  "development": {
+    "marketIds": "-1",
+    "poolAddress": "0xe6D69E48244231084aC083ED26EFD2BB0Ca21EAA"
+  },
+  "rinkeby": {
+    "marketIds": "-1",
+    "poolAddress": "0xe6D69E48244231084aC083ED26EFD2BB0Ca21EAA"
+  },
+  "mainnet": {
+    "marketIds": "-1",
+    "poolAddress": "0xe6D69E48244231084aC083ED26EFD2BB0Ca21EAA"
+  },
+  "binanceTestnet": {
+    "marketIds": "-1",
+    "poolAddress": "0xe6D69E48244231084aC083ED26EFD2BB0Ca21EAA"
+  },
+  "binanceMainnet": {
+    "marketIds": "-1",
+    "poolAddress": "0xe6D69E48244231084aC083ED26EFD2BB0Ca21EAA"
+  },
+  "moonbeamTestnet": {
+    "marketIds": "-1",
+    "poolAddress": "0xe6D69E48244231084aC083ED26EFD2BB0Ca21EAA"
+  },
+  "polygonTestnet": {
+    "marketIds": "-1",
+    "poolAddress": "0xe6D69E48244231084aC083ED26EFD2BB0Ca21EAA"
+  },
+  "polygonMainnet": {
+    "marketIds": [ 2 ],
+    "poolAddress": ["0xAe740d42E4ff0C5086b2b5b5d149eB2F9e1A754F"]
+  },
+  "fantomTestnet": {
+    "marketIds": "-1",
+    "poolAddress": "0xe6D69E48244231084aC083ED26EFD2BB0Ca21EAA"
+  },
+  "plasmTestnet": {
+    "marketIds": "-1",
+    "poolAddress": "0xe6D69E48244231084aC083ED26EFD2BB0Ca21EAA"
+  }
+}

@@ -88,15 +88,21 @@ var LiquidityPoolAPI = {
     if (store.tokenPoolList == null) {
       store.tokenPoolList = [];
       store.tokenPoolContracts = [];
+      store.tokenPoolHash = {};
 
       let cnt = await this.getTokenPoolCount();
       // console.log("cnt:", cnt);
       for (var i = 0; i < cnt; i++) {
         let contract = await this.getTokenContractForPool(i);
+        // console.log("contract:", contract._address);
+        if (store.exclude.poolAddress.includes(contract._address)){
+          continue;
+        }
         let symbol = await contract.methods.symbol().call();
-        let option = { value: i, text: symbol }
-        store.tokenPoolList.push(option);
+        let pool = { value: i, text: symbol }
+        store.tokenPoolList.push(pool);
         store.tokenPoolContracts.push(contract);
+        store.tokenPoolHash[i] = pool;
       }
     }
     return store.tokenPoolList;
@@ -104,12 +110,18 @@ var LiquidityPoolAPI = {
 
   async getMarketList() {
     let tmpList;
+    let tmpHash;
     if (store.marketList == null) {
       tmpList = [];
+      tmpHash = {};
 
       let cnt = await this.getOptionMarketCount();    
       // console.log("cnt:", cnt);
       for (var i = 0; i < cnt; i++) {
+
+        if (store.exclude.marketIds.includes(i)){
+          continue;
+        }
 
         let tc = await this.getTokenContractForMarket(i);
         let collateral = await tc.methods.symbol().call();
@@ -126,8 +138,11 @@ var LiquidityPoolAPI = {
         // console.log(desc)
         let option = {value:i, text:pair1 + " : "+ collateral, pair1:pair1, pair2:pair2, collateral:collateral, latestPrice:lp}
         tmpList.push(option);
+
+        tmpHash[i] = option;        
       }
       store.marketList = tmpList;
+      store.marketHash = tmpHash;
       return tmpList;
     }
     return store.marketList;

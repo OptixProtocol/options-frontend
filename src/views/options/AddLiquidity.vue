@@ -116,7 +116,7 @@ export default {
     async getTokenPoolList() {
       this.tokenPoolList = await LiquidityPoolAPI.getTokenPoolList();
       this.selectedPoolId = store.selectedPoolId;
-      this.selectedPoolSymbol = this.tokenPoolList[this.selectedPoolId].text;
+      this.selectedPoolSymbol = this.tokenPoolHash[this.selectedPoolId].text;
     },
     getApproved() {},
     async getMaxInvest() {
@@ -193,7 +193,7 @@ export default {
     },
     async changeSelected() {
       await store.setSelectedPoolId(this.selectedPoolId);
-      this.selectedPoolSymbol = store.tokenPoolList[this.selectedPoolId].text;
+      this.selectedPoolSymbol = store.tokenPoolHash[this.selectedPoolId].text;
       this.getUserBalance();
       this.getPoolBalance();
       this.getAllowance();
@@ -415,19 +415,19 @@ export default {
               </b-row>
 
               <b-row class="poolInfo mt-1">
-                <b-col cols="8">
+                <b-col cols="6">
                   Current Pool Size
                 </b-col>
-                <b-col cols="4" class="text-right">
+                <b-col cols="6" class="text-right">
                   {{ (poolBalance / 1e18).toFixed(5) }}
                   {{ selectedPoolSymbol }}
                 </b-col>
               </b-row>
               <b-row v-if="userWeb3Connected" class="poolInfo mt-1">
-                <b-col cols="8">
+                <b-col cols="6">
                   Your Pool Share ({{ poolSharePercent.toFixed(2) }}%)
                 </b-col>
-                <b-col cols="4" class="text-right">
+                <b-col cols="6" class="text-right">
                   {{ (shareOf / 1e18).toFixed(5) }}
                   {{ selectedPoolSymbol }}
                 </b-col>

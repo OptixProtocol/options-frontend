@@ -99,7 +99,9 @@ export default {
     getMarket(item) {
       // console.log("getMarket:item:",item)
       // console.log("store.marketList:",store.marketList)
-      return store.marketList[item.marketId].text;
+      // console.log("item.marketId:",item.marketId)
+      
+      return store.marketHash[item.marketId].text;
       // return "m";
     },
     getSize(item) {
@@ -111,7 +113,7 @@ export default {
     },
     getLatestPrice(item) {
       // console.log("latest:",store.marketList[item.marketId].latestPrice)
-      return oracleToCents(store.marketList[item.marketId].latestPrice)/10;
+      return oracleToCents(store.marketHash[item.marketId].latestPrice)/10;
     },
     getPremiumUSD(item) {
       return (+this.getLatestPrice(item) * +item.premium) / 1e18;
@@ -153,7 +155,7 @@ export default {
 
       if (this.showActive){
  
-        let latestPrice = oracleToCents(store.marketList[item.marketId].latestPrice)/10;
+        let latestPrice = oracleToCents(store.marketHash[item.marketId].latestPrice)/10;
         let size = +item.optionSize/1e9;
         let strike = oracleToCents(item.strike);
         let prem = item.premium/1e18;
@@ -202,9 +204,9 @@ export default {
       }
 
       if (item.optionType == ERC20OptionsAPI.OptionType.Call) {  
-        return +item.strike <= +store.marketList[item.marketId].latestPrice/10;
+        return +item.strike <= +store.marketHash[item.marketId].latestPrice/10;
       } else {
-        return +item.strike >= +store.marketList[item.marketId].latestPrice/10;
+        return +item.strike >= +store.marketHash[item.marketId].latestPrice/10;
       }
     },
     cantDisplayExercise(item) {
