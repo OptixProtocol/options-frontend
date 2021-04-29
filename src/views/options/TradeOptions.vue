@@ -255,7 +255,7 @@ export default {
     },
     async getLatestPrice() {
       this.latestPrice = await ERC20OptionsAPI.getLatestPrice();
-      // this.tokenSymbols = await LiquidityPoolAPI.getMarketList();
+      this.tokenSymbols = await LiquidityPoolAPI.getMarketList();
       // console.log("latestPrice:",this.latestPrice);
       let pair2 = store.marketHash[this.selectedMarketId].pair2;
       let sp = 0;
