@@ -28,8 +28,8 @@
     "poolAddress": "0xe6D69E48244231084aC083ED26EFD2BB0Ca21EAA"
   },
   "polygonMainnet": {
-    "marketIds": [ 2 ],
-    "poolAddress": ["0xAe740d42E4ff0C5086b2b5b5d149eB2F9e1A754F"]
+    "marketIds": [ 1, 2, 3 ],
+    "poolAddress": ["0xAe740d42E4ff0C5086b2b5b5d149eB2F9e1A754F", "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619", "0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6"]
   },
   "fantomTestnet": {
     "marketIds": "-1",
