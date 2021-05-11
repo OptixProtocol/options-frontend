@@ -20,7 +20,7 @@
         </b-modal>
          <b-modal id="modal-center" centered title="Warning" v-model="networkIsSupported"  ok-only ok-title="I understand" >
             <p class="my-4">
-            Optyn is a unaudited beta smart contract software. <br>Only use funds that you can afford to lose.<br><br>
+            Optyn is unaudited beta smart contract software. <br>Only use funds that you can afford to lose.<br><br>
             </p>
         </b-modal>
 
