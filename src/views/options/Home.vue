@@ -1,7 +1,7 @@
 <template>
   <div>
     <CIcon name="logo" height="48" alt="Logo" src="optyn-logo-170x170.png" />
-    <h2>Crypto Option Trading Protocol<br /></h2>
+    <h2>Crypto Option & Synthetic Asset Protocol<br /></h2>
     <br />
     <vue-typed-js
       :strings="[
