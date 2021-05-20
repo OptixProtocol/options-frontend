@@ -30,6 +30,7 @@
       </li>
       <li><a href="https://discord.gg/8ycMuYt7PS">Discord</a></li>
       <li><a href="https://twitter.com/CryptoOptyn">Twitter</a></li>
+      <li><a href="http://medium.com/optyn/">Medium</a></li>
       <li><a href="https://github.com/CryptoOptyn">GitHub</a></li>
       <!-- <li>Read the docs</li>
       <li>FAQ</li>  -->
