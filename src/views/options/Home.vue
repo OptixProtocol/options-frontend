@@ -31,7 +31,6 @@
       <li><a href="https://discord.gg/8ycMuYt7PS">Discord</a></li>
       <li><a href="https://twitter.com/CryptoOptyn">Twitter</a></li>
       <li><a href="http://medium.com/optyn/">Medium</a></li>
-      <li><a href="https://drive.google.com/file/d/1WsRVy1RA3sI_lr2LB0H4l6LLuX2imjAX/view?usp=sharing">Litepaper</a></li>
       <li><a href="https://github.com/CryptoOptyn">GitHub</a></li>
       <!-- <li>Read the docs</li>
       <li>FAQ</li>  -->
