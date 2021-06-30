@@ -10,7 +10,7 @@
       class="ml-3 d-md-down-none"
       @click="$store.commit('toggleSidebarDesktop')"
     />
-    <CHeaderBrand class="mx-auto logo" to="https://optyn.co">
+    <CHeaderBrand class="mx-auto logo" href="https://optyn.co">
       <CIcon name="logo" height="48" alt="Logo" src="optyn-logo-45x45.png" />
     </CHeaderBrand>
     <CHeaderNav class="mr-4 connect">

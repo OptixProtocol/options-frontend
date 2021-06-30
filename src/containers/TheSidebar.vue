@@ -5,7 +5,7 @@
     :show="show"
     @update:show="(value) => $store.commit('set', ['sidebarShow', value])"
   >
-    <CSidebarBrand class="d-md-down-none" to="https://optyn.co">
+    <CSidebarBrand class="d-md-down-none" href="https://optyn.co">
       <CIcon
         class="c-sidebar-brand-full"
         name="logo"
