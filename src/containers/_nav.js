@@ -4,11 +4,6 @@ export default [
     _children: [
       {
         _name: 'CSidebarNavItem',
-        name: 'Home',
-        to: '/'
-      },
-      {
-        _name: 'CSidebarNavItem',
         name: 'Trade Options',
         to: '/trade-options'
       },
